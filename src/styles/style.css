@@ -76,7 +76,6 @@ p {
 }
 
 .reference-card {
-  --strategy-center-y: -50%;
   aspect-ratio: 7 / 5;
   background: rgba(255, 255, 255, 0.92);
   border: 1px solid rgba(23, 23, 23, 0.12);
@@ -91,29 +90,32 @@ p {
   width: 100%;
 }
 
+.strategy-copy {
+  display: grid;
+  gap: 1.25rem;
+  justify-items: center;
+  left: 1.25rem;
+  position: absolute;
+  right: 1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
 .strategy-kicker {
   font-size: 0.875rem;
   font-weight: 600;
-  left: 50%;
   letter-spacing: 0.12em;
-  position: absolute;
+  margin: 0;
   text-align: center;
   text-transform: uppercase;
-  top: 50%;
-  transform: translate(-50%, calc(var(--strategy-center-y) - clamp(4.25rem, 9vw, 7rem)));
   white-space: nowrap;
 }
 
 .strategy-message {
   font-size: clamp(2.25rem, 7vw, 4.5rem);
-  left: 1.25rem;
   line-height: 1.05;
   margin: 0;
-  position: absolute;
-  right: 1.25rem;
   text-align: center;
-  top: 50%;
-  transform: translateY(var(--strategy-center-y));
 }
 
 
