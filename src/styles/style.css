@@ -120,7 +120,7 @@ p {
 
 
 .page-actions {
-  bottom: 1.5rem;
+  bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
