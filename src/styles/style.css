@@ -53,11 +53,21 @@ p {
   align-items: center;
   display: flex;
   flex-direction: column;
+  isolation: isolate;
   justify-content: center;
   min-height: 100vh;
   min-height: 100dvh;
   padding: 0 1rem;
   position: relative;
+}
+
+.page-shell::before {
+  background: inherit;
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: fixed;
+  z-index: -1;
 }
 
 .page-shell-wide {
