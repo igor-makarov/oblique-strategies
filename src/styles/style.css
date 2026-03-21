@@ -68,23 +68,34 @@ p {
 
 .reference-layout {
   margin: 0 auto;
-  width: min(100%, 760px);
+  width: min(calc(100vw - 4rem), calc((100dvh - 10rem) * 7 / 5), 1100px);
 }
 
 .reference-card {
+  aspect-ratio: 7 / 5;
   background: rgba(255, 255, 255, 0.92);
   border: 1px solid rgba(23, 23, 23, 0.12);
   border-radius: 24px;
   box-shadow: 0 18px 60px rgba(23, 23, 23, 0.12);
-  max-width: 760px;
-  padding: 2rem;
+  display: flex;
+  max-height: calc(100dvh - 10rem);
+  padding: clamp(1.5rem, 3vw, 3rem);
   text-align: start;
+  width: 100%;
+}
+
+.reference-card > * {
+  width: 100%;
 }
 
 .strategy-detail {
+  align-items: center;
   display: flex;
+  flex: 1;
   flex-direction: column;
   gap: 1.25rem;
+  justify-content: center;
+  min-height: 100%;
 }
 
 .strategy-kicker {
@@ -185,12 +196,17 @@ tr:nth-child(odd) {
   }
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 768px) {
   .page-shell {
     padding: 1rem 1rem 4rem;
   }
 
+  .reference-layout {
+    width: min(calc(100vw - 2rem), calc((100dvh - 7rem) * 5 / 7));
+  }
+
   .reference-card {
+    aspect-ratio: 5 / 7;
     border-radius: 18px;
     padding: 1.25rem;
   }
