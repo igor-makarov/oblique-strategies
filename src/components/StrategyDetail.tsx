@@ -23,10 +23,10 @@ export default function StrategyDetail({ strategy, actions }: Props) {
               Oblique Strategies
             </div>
             <h1 className="strategy-message">{strategy.message}</h1>
-            {actions ? <div className="button-row">{actions}</div> : null}
           </div>
         </ReferenceCard>
       </div>
+      {actions ? <nav className="page-actions">{actions}</nav> : null}
     </div>
   );
 }

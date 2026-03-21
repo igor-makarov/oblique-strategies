@@ -35,14 +35,14 @@ export default function HomePage() {
           <div className="strategy-detail">
             <div className="strategy-kicker">Oblique Strategies</div>
             <h1 className="strategy-message">Choosing a card…</h1>
-            <div className="button-row">
-              <Link className="action-link" to="/cards">
-                Browse all cards
-              </Link>
-            </div>
           </div>
         </ReferenceCard>
       </div>
+      <nav className="page-actions">
+        <Link className="page-action-link" to="/cards">
+          Browse all cards
+        </Link>
+      </nav>
     </div>
   );
 }

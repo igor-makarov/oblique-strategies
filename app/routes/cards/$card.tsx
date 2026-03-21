@@ -5,14 +5,14 @@ import { getStrategyBySlug } from "@/js/data/obliqueStrategies";
 
 import type { Route } from "./+types/$card";
 
-const pageTitle = "Oblique Strategy Card";
+const pageTitle = "Oblique Strategies";
 
 interface LoaderData {
   strategy: NonNullable<ReturnType<typeof getStrategyBySlug>>;
 }
 
-export function meta({ data }: Route.MetaArgs) {
-  return [{ title: data?.strategy.message ?? pageTitle }];
+export function meta() {
+  return [{ title: pageTitle }];
 }
 
 export async function loader({ params }: Route.LoaderArgs): Promise<LoaderData> {
@@ -34,10 +34,10 @@ export default function CardPage({ loaderData }: Route.ComponentProps) {
       strategy={strategy}
       actions={
         <>
-          <Link className="action-link" to="/">
+          <Link className="page-action-link" to="/">
             Shuffle a card
           </Link>
-          <Link className="action-link" to="/cards">
+          <Link className="page-action-link" to="/cards">
             Browse all cards
           </Link>
         </>

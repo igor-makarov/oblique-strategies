@@ -51,9 +51,11 @@ p {
 .page-shell {
   align-items: center;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   min-height: 100vh;
-  padding: 2rem 1rem;
+  padding: 2rem 1rem 5rem;
+  position: relative;
 }
 
 .page-shell-wide {
@@ -102,36 +104,26 @@ p {
 }
 
 
-.button-row {
+.page-actions {
+  bottom: 1.5rem;
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
+  gap: 1rem;
   justify-content: center;
+  left: 50%;
+  position: absolute;
+  transform: translateX(-50%);
+  width: calc(100% - 2rem);
 }
 
-.action-link,
-.action-link:visited,
-button.action-link {
-  appearance: none;
-  background: #171717;
-  border: 1px solid #171717;
-  border-radius: 999px;
-  color: white;
-  cursor: pointer;
-  font: inherit;
-  padding: 0.8rem 1.1rem;
-  text-decoration: none;
-  transition:
-    transform 120ms ease,
-    opacity 120ms ease,
-    background-color 120ms ease;
+.page-action-link,
+.page-action-link:visited {
+  color: rgba(23, 23, 23, 0.72);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
 }
 
-.action-link:hover,
-button.action-link:hover {
-  opacity: 0.92;
-  transform: translateY(-1px);
-}
 
 .browse-layout {
   margin: 0 auto;
@@ -195,7 +187,7 @@ tr:nth-child(odd) {
 
 @media screen and (max-width: 600px) {
   .page-shell {
-    padding: 1rem;
+    padding: 1rem 1rem 4rem;
   }
 
   .reference-card {
