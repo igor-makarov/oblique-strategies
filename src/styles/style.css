@@ -1,0 +1,215 @@
+body {
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  margin: 0;
+  min-height: 100vh;
+  color: #171717;
+  background: #f6f3ea;
+}
+
+a {
+  color: inherit;
+}
+
+a:visited {
+  color: inherit;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin-top: 0;
+}
+
+.mono {
+  font-family:
+    ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono", "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro", "Fira Mono",
+    "Droid Sans Mono", "Courier New", monospace;
+}
+
+.row {
+  margin-bottom: 10px;
+}
+
+.row.four-across {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+.page-shell {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem 1rem;
+}
+
+.page-shell-wide {
+  align-items: flex-start;
+}
+
+.page-shell-neutral {
+  background: linear-gradient(180deg, #f7f1e3 0%, #ede7da 100%);
+}
+
+.reference-layout {
+  margin: 0 auto;
+  width: min(100%, 760px);
+}
+
+.reference-card {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(23, 23, 23, 0.12);
+  border-radius: 24px;
+  box-shadow: 0 18px 60px rgba(23, 23, 23, 0.12);
+  max-width: 760px;
+  padding: 2rem;
+  text-align: start;
+}
+
+.strategy-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.strategy-kicker {
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.strategy-message {
+  font-size: clamp(2.25rem, 7vw, 4.5rem);
+  line-height: 1.05;
+  margin-bottom: 0;
+  text-align: center;
+  text-wrap: balance;
+}
+
+
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+.action-link,
+.action-link:visited,
+button.action-link {
+  appearance: none;
+  background: #171717;
+  border: 1px solid #171717;
+  border-radius: 999px;
+  color: white;
+  cursor: pointer;
+  font: inherit;
+  padding: 0.8rem 1.1rem;
+  text-decoration: none;
+  transition:
+    transform 120ms ease,
+    opacity 120ms ease,
+    background-color 120ms ease;
+}
+
+.action-link:hover,
+button.action-link:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+.browse-layout {
+  margin: 0 auto;
+  width: min(1200px, 100%);
+}
+
+.browse-header {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.browse-header h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  margin-bottom: 0.5rem;
+}
+
+.browse-header p {
+  color: rgba(23, 23, 23, 0.75);
+  line-height: 1.6;
+  margin: 0 auto;
+  max-width: 720px;
+}
+
+.browse-header-links {
+  display: inline-block;
+  margin-left: 0.5rem;
+  text-decoration: underline;
+}
+
+table {
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid #ddd;
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+}
+
+th,
+td {
+  text-align: left;
+}
+
+th {
+  background: rgba(23, 23, 23, 0.07);
+  padding: 0.85rem 1rem;
+}
+
+td {
+  padding: 0.8rem 1rem;
+}
+
+tr:nth-child(odd) {
+  background-color: rgba(23, 23, 23, 0.03);
+}
+
+@media screen and (max-width: 900px) {
+  .row.four-across {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .page-shell {
+    padding: 1rem;
+  }
+
+  .reference-card {
+    border-radius: 18px;
+    padding: 1.25rem;
+  }
+
+  .row.four-across {
+    grid-template-columns: 1fr;
+  }
+
+  .browse-header-links {
+    display: block;
+    margin-left: 0;
+    margin-top: 0.5rem;
+  }
+}
