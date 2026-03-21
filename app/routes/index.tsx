@@ -32,10 +32,8 @@ export default function HomePage() {
     <div className="page-shell page-shell-neutral">
       <div className="reference-layout">
         <ReferenceCard>
-          <div className="strategy-detail">
-            <div className="strategy-kicker">Oblique Strategies</div>
-            <h1 className="strategy-message">Choosing a card…</h1>
-          </div>
+          <div className="strategy-kicker">Oblique Strategies</div>
+          <h1 className="strategy-message">Choosing a card…</h1>
         </ReferenceCard>
       </div>
       <nav className="page-actions">

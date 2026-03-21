@@ -54,7 +54,7 @@ p {
   flex-direction: column;
   justify-content: center;
   min-height: 100vh;
-  padding: 2rem 1rem 5rem;
+  padding: 0 1rem;
   position: relative;
 }
 
@@ -67,11 +67,15 @@ p {
 }
 
 .reference-layout {
-  margin: 0 auto;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
   width: min(calc(100vw - 4rem), calc((100dvh - 10rem) * 7 / 5), 1100px);
 }
 
 .reference-card {
+  --strategy-center-y: -50%;
   aspect-ratio: 7 / 5;
   background: rgba(255, 255, 255, 0.92);
   border: 1px solid rgba(23, 23, 23, 0.12);
@@ -80,38 +84,35 @@ p {
   display: flex;
   max-height: calc(100dvh - 10rem);
   padding: clamp(1.5rem, 3vw, 3rem);
+  position: relative;
   text-align: start;
   width: 100%;
-}
-
-.reference-card > * {
-  width: 100%;
-}
-
-.strategy-detail {
-  align-items: center;
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  gap: 1.25rem;
-  justify-content: center;
-  min-height: 100%;
 }
 
 .strategy-kicker {
   font-size: 0.875rem;
   font-weight: 600;
+  left: 50%;
   letter-spacing: 0.12em;
+  position: absolute;
   text-align: center;
   text-transform: uppercase;
+  top: 50%;
+  transform: translate(-50%, calc(var(--strategy-center-y) - clamp(4.25rem, 9vw, 7rem)));
+  white-space: nowrap;
 }
 
 .strategy-message {
   font-size: clamp(2.25rem, 7vw, 4.5rem);
+  left: 50%;
   line-height: 1.05;
-  margin-bottom: 0;
+  margin: 0;
+  position: absolute;
   text-align: center;
   text-wrap: balance;
+  top: 50%;
+  transform: translate(-50%, var(--strategy-center-y));
+  width: min(100%, 58rem);
 }
 
 
@@ -198,7 +199,7 @@ tr:nth-child(odd) {
 
 @media screen and (max-width: 768px) {
   .page-shell {
-    padding: 1rem 1rem 4rem;
+    padding: 0 1rem;
   }
 
   .reference-layout {

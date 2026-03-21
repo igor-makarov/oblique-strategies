@@ -18,12 +18,10 @@ export default function StrategyDetail({ strategy, actions }: Props) {
     <div className="page-shell" style={shellStyle}>
       <div className="reference-layout">
         <ReferenceCard>
-          <div className="strategy-detail">
-            <div className="strategy-kicker" style={accentStyle}>
-              Oblique Strategies
-            </div>
-            <h1 className="strategy-message">{strategy.message}</h1>
+          <div className="strategy-kicker" style={accentStyle}>
+            Oblique Strategies
           </div>
+          <h1 className="strategy-message">{strategy.message}</h1>
         </ReferenceCard>
       </div>
       {actions ? <nav className="page-actions">{actions}</nav> : null}
