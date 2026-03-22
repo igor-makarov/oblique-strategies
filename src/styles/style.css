@@ -56,16 +56,59 @@ p {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: 100vh;
-  min-height: 100dvh;
   padding: 0 1rem;
   position: relative;
 }
 
-.page-shell-viewport {
-  inset: 0;
-  min-height: auto;
-  position: fixed;
+
+
+/* ── Method 1: Flexbox ── */
+.page-shell-m1 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100dvh;
+}
+
+/* ── Method 2: CSS Grid place-items ── */
+.page-shell-m2 {
+  display: grid;
+  place-items: center;
+  min-height: 100dvh;
+}
+
+/* ── Method 3: Absolute + translate ── */
+.page-shell-m3 {
+  position: relative;
+  min-height: 100dvh;
+}
+.page-shell-m3 > .reference-layout {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* ── Method 4: margin auto on child ── */
+.page-shell-m4 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100dvh;
+}
+.page-shell-m4 > .reference-layout {
+  margin-block: auto;
+}
+
+/* ── Method 5: Anchor positioning (position-area) ── */
+.page-shell-m5 {
+  position: relative;
+  min-height: 100dvh;
+}
+.page-shell-m5 > .reference-layout {
+  position: absolute;
+  position-area: center;
 }
 
 .page-shell-wide {
@@ -77,12 +120,9 @@ p {
 }
 
 .reference-layout {
-  left: 50%;
-  position: absolute;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: min(calc(100vw - 4rem), calc((100vh - 10rem) * 7 / 5), 1100px);
-  width: min(calc(100vw - 4rem), calc((100dvh - 10rem) * 7 / 5), 1100px);
+  height: calc((100vw - 4rem) * 5 / 7);
+  margin-inline: auto;
+  padding-top: calc((100vh - (100vw - 4rem) * 5 / 7) / 4 - env(safe-area-inset-top, 0px));
 }
 
 .reference-card {
