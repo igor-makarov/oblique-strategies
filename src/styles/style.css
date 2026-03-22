@@ -120,9 +120,11 @@ p {
 }
 
 .reference-layout {
-  height: calc((100vw - 4rem) * 5 / 7);
+  --card-height: min(calc((100vw - 4rem) * 5 / 7), calc(60vh), calc(700px * 5 / 7));
+  height: var(--card-height);
+  max-width: 700px;
   margin-inline: auto;
-  padding-top: calc((100vh - (100vw - 4rem) * 5 / 7) / 4 - env(safe-area-inset-top, 0px));
+  padding-top: calc((100vh - var(--card-height)) / 4 - env(safe-area-inset-top, 0px));
 }
 
 .reference-card {
