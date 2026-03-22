@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-
 import CardLayout from "@/components/common/CardLayout";
 import type { StrategyCard } from "@/js/data/obliqueStrategies";
 import { getStrategyTheme } from "@/js/utils/getStrategyTheme";
@@ -11,13 +9,6 @@ interface Props {
 export default function StrategyDetail({ strategy }: Props) {
   const theme = getStrategyTheme(strategy.id);
   const accentStyle = { color: theme.accent };
-
-  useEffect(() => {
-    document.body.style.background = theme.background;
-    return () => {
-      document.body.style.background = "";
-    };
-  }, [theme.background]);
 
   return (
     <CardLayout>

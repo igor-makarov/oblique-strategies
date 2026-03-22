@@ -1,8 +1,21 @@
-import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
+import { Links, Meta, Outlet, Scripts, ScrollRestoration, useMatches } from "react-router";
 
 import "@/styles/style.css";
 
+function useBodyBackground(): string | undefined {
+  const matches = useMatches();
+
+  for (const match of [...matches].reverse()) {
+    const data = match.loaderData as { background?: string } | undefined;
+    if (data?.background) {
+      return data.background;
+    }
+  }
+}
+
 export default function Root() {
+  const background = useBodyBackground();
+
   return (
     <html lang="en">
       <head>
@@ -14,7 +27,7 @@ export default function Root() {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body style={background ? { background } : undefined}>
         <Outlet />
         <ScrollRestoration />
         <Scripts />

@@ -1,20 +1,17 @@
 import PageActions from "@/components/common/PageActions";
 import StrategyDetail from "@/components/StrategyDetail";
 import { getStrategyBySlug } from "@/js/data/obliqueStrategies";
+import { getStrategyTheme } from "@/js/utils/getStrategyTheme";
 
 import type { Route } from "./+types/$card";
 
 const pageTitle = "Oblique Strategies";
 
-interface LoaderData {
-  strategy: NonNullable<ReturnType<typeof getStrategyBySlug>>;
-}
-
 export function meta() {
   return [{ title: pageTitle }];
 }
 
-export async function loader({ params }: Route.LoaderArgs): Promise<LoaderData> {
+export async function loader({ params }: Route.LoaderArgs) {
   const slug = params.card;
   const strategy = getStrategyBySlug(slug);
 
@@ -22,7 +19,9 @@ export async function loader({ params }: Route.LoaderArgs): Promise<LoaderData> 
     throw new Response("Not Found", { status: 404 });
   }
 
-  return { strategy };
+  const { background } = getStrategyTheme(strategy.id);
+
+  return { strategy, background };
 }
 
 export default function CardPage({ loaderData }: Route.ComponentProps) {
