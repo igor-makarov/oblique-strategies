@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { Link } from "react-router";
 
 import StrategyDetail from "@/components/StrategyDetail";
 import { obliqueStrategies } from "@/js/data/obliqueStrategies";
@@ -37,19 +36,5 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
     window.history.replaceState(null, "", cardRoute(strategy.slug));
   }, [strategy.slug]);
 
-  return (
-    <StrategyDetail
-      strategy={strategy}
-      actions={
-        <>
-          <Link reloadDocument className="page-action-link" to="/">
-            Shuffle a card
-          </Link>
-          <Link className="page-action-link" to="/cards">
-            Browse all cards
-          </Link>
-        </>
-      }
-    />
-  );
+  return <StrategyDetail strategy={strategy} />;
 }

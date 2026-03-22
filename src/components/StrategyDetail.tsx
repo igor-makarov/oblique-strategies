@@ -1,4 +1,5 @@
-import type { CSSProperties, ReactNode } from "react";
+import type { CSSProperties } from "react";
+import { Link } from "react-router";
 
 import ReferenceCard from "@/components/common/ReferenceCard";
 import type { StrategyCard } from "@/js/data/obliqueStrategies";
@@ -6,10 +7,9 @@ import { getStrategyTheme } from "@/js/utils/getStrategyTheme";
 
 interface Props {
   strategy: StrategyCard;
-  actions?: ReactNode;
 }
 
-export default function StrategyDetail({ strategy, actions }: Props) {
+export default function StrategyDetail({ strategy }: Props) {
   const theme = getStrategyTheme(strategy.id);
   const shellStyle = { background: theme.background } satisfies CSSProperties;
   const accentStyle = { color: theme.accent } satisfies CSSProperties;
@@ -26,7 +26,14 @@ export default function StrategyDetail({ strategy, actions }: Props) {
           </div>
         </ReferenceCard>
       </div>
-      {actions ? <nav className="page-actions">{actions}</nav> : null}
+      <nav className="page-actions">
+        <Link reloadDocument className="page-action-link" to="/">
+          Shuffle a card
+        </Link>
+        <Link className="page-action-link" to="/cards">
+          Browse all cards
+        </Link>
+      </nav>
     </div>
   );
 }
