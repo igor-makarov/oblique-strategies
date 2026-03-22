@@ -27,6 +27,7 @@ export default function StrategyDetail({ strategy }: Props) {
         </ReferenceCard>
       </div>
       <nav className="page-actions">
+        {/* The reason for `reloadDocument` is to prevent Safari from showing stale background color in the safe area */}
         <Link reloadDocument className="page-action-link" to="/">
           Shuffle a card
         </Link>
