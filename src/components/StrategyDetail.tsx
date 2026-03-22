@@ -1,4 +1,4 @@
-import type { CSSProperties } from "react";
+import { type CSSProperties, useEffect } from "react";
 import { Link } from "react-router";
 
 import ReferenceCard from "@/components/common/ReferenceCard";
@@ -13,6 +13,13 @@ export default function StrategyDetail({ strategy }: Props) {
   const theme = getStrategyTheme(strategy.id);
   const shellStyle = { background: theme.background } satisfies CSSProperties;
   const accentStyle = { color: theme.accent } satisfies CSSProperties;
+
+  useEffect(() => {
+    document.body.style.background = theme.background;
+    return () => {
+      document.body.style.background = "";
+    };
+  }, [theme.background]);
 
   return (
     <div className="page-shell page-shell-viewport" style={shellStyle}>

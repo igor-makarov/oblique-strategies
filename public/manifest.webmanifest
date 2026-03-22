@@ -1,0 +1,9 @@
+{
+  "name": "Oblique Strategies",
+  "short_name": "Oblique Strategies",
+  "description": "A random oblique strategy to help you see a problem in a new way, or find inspiration to help get through a creative block.",
+  "start_url": ".",
+  "display": "browser",
+  "background_color": "#f6f3ea",
+  "theme_color": "#f6f3ea"
+}
