@@ -1,11 +1,7 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router";
+import { redirect } from "react-router";
 
-import StrategyDetail from "@/components/StrategyDetail";
 import { obliqueStrategies } from "@/js/data/obliqueStrategies";
 import { cardRoute } from "@/js/utils/collectStrategyRoutes";
-
-import type { Route } from "./+types/index";
 
 const pageTitle = "Oblique Strategies";
 
@@ -21,7 +17,8 @@ export function meta() {
 
 export async function clientLoader() {
   const randomIndex = Math.floor(Math.random() * obliqueStrategies.length);
-  return { strategy: obliqueStrategies[randomIndex] };
+  const strategy = obliqueStrategies[randomIndex];
+  return redirect(cardRoute(strategy.slug));
 }
 
 export function HydrateFallback() {
@@ -32,16 +29,7 @@ export function HydrateFallback() {
   );
 }
 
-export default function HomePage({ loaderData }: Route.ComponentProps) {
-  const { strategy } = loaderData;
-
-  console.log("slug", strategy.slug);
-
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    navigate(cardRoute(strategy.slug), { replace: true });
-  }, [navigate, strategy.slug]);
-
-  return <StrategyDetail strategy={strategy} />;
+export default function HomePage() {
+  // clientLoader always redirects, so this never renders
+  return null;
 }
