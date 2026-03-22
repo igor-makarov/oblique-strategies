@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
 
-import ReferenceCard from "@/components/common/ReferenceCard";
+import StrategyDetail from "@/components/StrategyDetail";
 import { obliqueStrategies } from "@/js/data/obliqueStrategies";
 import { cardRoute } from "@/js/utils/collectStrategyRoutes";
 
@@ -18,31 +18,28 @@ export function meta() {
 }
 
 export default function HomePage() {
-  const navigate = useNavigate();
-  const randomCardPath = useMemo(() => {
+  const randomStrategy = useMemo(() => {
     const randomIndex = Math.floor(Math.random() * obliqueStrategies.length);
-    return cardRoute(obliqueStrategies[randomIndex].slug);
+    return obliqueStrategies[randomIndex];
   }, []);
 
   useEffect(() => {
-    navigate(randomCardPath, { replace: true });
-  }, [navigate, randomCardPath]);
+    window.history.replaceState(null, "", cardRoute(randomStrategy.slug));
+  }, [randomStrategy.slug]);
 
   return (
-    <div className="page-shell page-shell-neutral page-shell-viewport">
-      <div className="reference-layout">
-        <ReferenceCard>
-          <div className="strategy-copy">
-            <div className="strategy-kicker">Oblique Strategies</div>
-            <h1 className="strategy-message">Choosing a card…</h1>
-          </div>
-        </ReferenceCard>
-      </div>
-      <nav className="page-actions">
-        <Link className="page-action-link" to="/cards">
-          Browse all cards
-        </Link>
-      </nav>
-    </div>
+    <StrategyDetail
+      strategy={randomStrategy}
+      actions={
+        <>
+          <Link reloadDocument className="page-action-link" to="/">
+            Shuffle a card
+          </Link>
+          <Link className="page-action-link" to="/cards">
+            Browse all cards
+          </Link>
+        </>
+      }
+    />
   );
 }
