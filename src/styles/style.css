@@ -177,10 +177,9 @@ p {
 }
 
 .spinner-layout {
-  display: grid;
-  place-items: center;
-  min-height: 100vh;
-  min-height: 100dvh;
+  display: flex;
+  justify-content: center;
+  padding-top: calc((100vh - 2rem - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)) / 2);
 }
 
 .shuffle-spinner {
