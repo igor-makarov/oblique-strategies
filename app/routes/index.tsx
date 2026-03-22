@@ -1,6 +1,6 @@
 import { redirect } from "react-router";
 
-import ReferenceCard from "@/components/common/ReferenceCard";
+import CardLayout from "@/components/common/CardLayout";
 import { obliqueStrategies } from "@/js/data/obliqueStrategies";
 import { cardRoute } from "@/js/utils/collectStrategyRoutes";
 
@@ -22,20 +22,18 @@ export async function clientLoader() {
   return redirect(cardRoute(strategy.slug));
 }
 
-const SpinnerCard = () => (
-  <div className="reference-layout">
-    <ReferenceCard>
-      <div className="spinner-layout">
-        <div className="shuffle-spinner" />
-      </div>
-    </ReferenceCard>
-  </div>
-);
-
 export function HydrateFallback() {
-  return <SpinnerCard />;
+  return (
+    <CardLayout>
+      <div className="shuffle-spinner" />
+    </CardLayout>
+  );
 }
 
 export default function HomePage() {
-  return <SpinnerCard />;
+  return (
+    <CardLayout>
+      <div className="shuffle-spinner" />
+    </CardLayout>
+  );
 }

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import ReferenceCard from "@/components/common/ReferenceCard";
+import CardLayout from "@/components/common/CardLayout";
 import type { StrategyCard } from "@/js/data/obliqueStrategies";
 import { getStrategyTheme } from "@/js/utils/getStrategyTheme";
 
@@ -20,13 +20,11 @@ export default function StrategyDetail({ strategy }: Props) {
   }, [theme.background]);
 
   return (
-    <div className="reference-layout">
-      <ReferenceCard>
-        <div className="strategy-kicker" style={accentStyle}>
-          Oblique Strategies
-        </div>
-        <h1 className="strategy-message">{strategy.message}</h1>
-      </ReferenceCard>
-    </div>
+    <CardLayout>
+      <div className="strategy-kicker" style={accentStyle}>
+        Oblique Strategies
+      </div>
+      <h1 className="strategy-message">{strategy.message}</h1>
+    </CardLayout>
   );
 }
