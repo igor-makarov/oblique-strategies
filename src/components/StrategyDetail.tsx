@@ -22,12 +22,10 @@ export default function StrategyDetail({ strategy }: Props) {
   return (
     <div className="reference-layout">
       <ReferenceCard>
-        <div className="strategy-copy">
-          <div className="strategy-kicker" style={accentStyle}>
-            Oblique Strategies
-          </div>
-          <h1 className="strategy-message">{strategy.message}</h1>
+        <div className="strategy-kicker" style={accentStyle}>
+          Oblique Strategies
         </div>
+        <h1 className="strategy-message">{strategy.message}</h1>
       </ReferenceCard>
     </div>
   );
