@@ -23,7 +23,7 @@ export async function clientLoader() {
 
 export function HydrateFallback() {
   return (
-    <div className="page-shell page-shell-viewport">
+    <div className="spinner-layout">
       <div className="shuffle-spinner" />
     </div>
   );

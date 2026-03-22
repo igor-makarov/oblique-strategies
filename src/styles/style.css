@@ -56,16 +56,59 @@ p {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: 100vh;
-  min-height: 100dvh;
   padding: 0 1rem;
   position: relative;
 }
 
-.page-shell-viewport {
-  inset: 0;
-  min-height: auto;
-  position: fixed;
+
+
+/* ── Method 1: Flexbox ── */
+.page-shell-m1 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100dvh;
+}
+
+/* ── Method 2: CSS Grid place-items ── */
+.page-shell-m2 {
+  display: grid;
+  place-items: center;
+  min-height: 100dvh;
+}
+
+/* ── Method 3: Absolute + translate ── */
+.page-shell-m3 {
+  position: relative;
+  min-height: 100dvh;
+}
+.page-shell-m3 > .reference-layout {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* ── Method 4: margin auto on child ── */
+.page-shell-m4 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100dvh;
+}
+.page-shell-m4 > .reference-layout {
+  margin-block: auto;
+}
+
+/* ── Method 5: Anchor positioning (position-area) ── */
+.page-shell-m5 {
+  position: relative;
+  min-height: 100dvh;
+}
+.page-shell-m5 > .reference-layout {
+  position: absolute;
+  position-area: center;
 }
 
 .page-shell-wide {
@@ -77,12 +120,10 @@ p {
 }
 
 .reference-layout {
-  left: 50%;
-  position: absolute;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: min(calc(100vw - 4rem), calc((100vh - 10rem) * 7 / 5), 1100px);
-  width: min(calc(100vw - 4rem), calc((100dvh - 10rem) * 7 / 5), 1100px);
+  --card-height: min(calc((100vw - 4rem) * 5 / 7), calc(60vw), calc(700px * 5 / 7));
+  max-width: 700px;
+  margin-inline: auto;
+  padding-top: calc((100vh - var(--card-height) - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)) / 2);
 }
 
 .reference-card {
@@ -92,23 +133,15 @@ p {
   border-radius: 24px;
   box-shadow: 0 18px 60px rgba(23, 23, 23, 0.12);
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
   max-height: calc(100vh - 10rem);
   max-height: calc(100dvh - 10rem);
   padding: clamp(1.5rem, 3vw, 3rem);
-  position: relative;
-  text-align: start;
+  text-align: center;
   width: 100%;
-}
-
-.strategy-copy {
-  display: grid;
-  gap: 1.25rem;
-  justify-items: center;
-  left: 1.25rem;
-  position: absolute;
-  right: 1.25rem;
-  top: 50%;
-  transform: translateY(-50%);
 }
 
 .strategy-kicker {
@@ -135,6 +168,12 @@ p {
   }
 }
 
+.spinner-layout {
+  display: flex;
+  justify-content: center;
+  padding-top: calc((100vh - 2rem - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)) / 2);
+}
+
 .shuffle-spinner {
   animation: spin 0.8s linear infinite;
   border: 3px solid rgba(23, 23, 23, 0.12);
@@ -145,15 +184,11 @@ p {
 }
 
 .page-actions {
-  bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
   justify-content: center;
-  left: 50%;
-  position: absolute;
-  transform: translateX(-50%);
-  width: calc(100% - 2rem);
+  margin-top: 2.5rem;
 }
 
 .page-action-link,
@@ -231,8 +266,9 @@ tr:nth-child(odd) {
   }
 
   .reference-layout {
-    width: min(calc(100vw - 2rem), calc((100vh - 7rem) * 5 / 7));
-    width: min(calc(100vw - 2rem), calc((100dvh - 7rem) * 5 / 7));
+    --card-height: min(calc((100vw - 2rem) * 7 / 5), calc(70vh));
+    max-width: calc(100vw - 2rem);
+    padding-top: calc((100vh - var(--card-height) - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)) / 2);
   }
 
   .reference-card {
