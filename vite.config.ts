@@ -7,7 +7,7 @@ export default defineConfig({
     assetsDir: (process.env.BASE_URL || "/").substring(1) + "assets/",
   },
   server: {
-    allowedHosts: ["igors-macbook-air.local"],
+    allowedHosts: ["igors-macbook-air.local", "il-m-igor-ma-02.local"],
     host: true,
   },
   plugins: [tsconfigPaths(), reactRouter()],
