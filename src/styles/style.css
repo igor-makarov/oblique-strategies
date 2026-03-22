@@ -51,9 +51,9 @@ p {
 
 .page-shell {
   align-items: center;
+  background: transparent;
   display: flex;
   flex-direction: column;
-  isolation: isolate;
   justify-content: center;
   min-height: 100vh;
   min-height: 100dvh;
@@ -61,13 +61,10 @@ p {
   position: relative;
 }
 
-.page-shell::before {
-  background: inherit;
-  content: "";
+.page-shell-viewport {
   inset: 0;
-  pointer-events: none;
+  min-height: auto;
   position: fixed;
-  z-index: -1;
 }
 
 .page-shell-wide {
@@ -75,7 +72,7 @@ p {
 }
 
 .page-shell-neutral {
-  background: linear-gradient(180deg, #f7f1e3 0%, #ede7da 100%);
+  background: transparent;
 }
 
 .reference-layout {

@@ -15,7 +15,7 @@ export default function StrategyDetail({ strategy, actions }: Props) {
   const accentStyle = { color: theme.accent } satisfies CSSProperties;
 
   return (
-    <div className="page-shell" style={shellStyle}>
+    <div className="page-shell page-shell-viewport" style={shellStyle}>
       <div className="reference-layout">
         <ReferenceCard>
           <div className="strategy-copy">

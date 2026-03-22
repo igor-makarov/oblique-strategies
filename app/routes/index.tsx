@@ -29,7 +29,7 @@ export default function HomePage() {
   }, [navigate, randomCardPath]);
 
   return (
-    <div className="page-shell page-shell-neutral">
+    <div className="page-shell page-shell-neutral page-shell-viewport">
       <div className="reference-layout">
         <ReferenceCard>
           <div className="strategy-copy">
