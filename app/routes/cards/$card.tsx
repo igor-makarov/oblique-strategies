@@ -34,7 +34,7 @@ export default function CardPage({ loaderData }: Route.ComponentProps) {
       strategy={strategy}
       actions={
         <>
-          <Link className="page-action-link" to="/">
+          <Link reloadDocument className="page-action-link" to="/">
             Shuffle a card
           </Link>
           <Link className="page-action-link" to="/cards">
