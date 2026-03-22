@@ -124,7 +124,7 @@ p {
   height: var(--card-height);
   max-width: 700px;
   margin-inline: auto;
-  padding-top: calc((100vh - var(--card-height) - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)) / 2 );
+  padding-top: calc((100vh - var(--card-height) - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)) / 2);
 }
 
 .reference-card {
@@ -273,8 +273,10 @@ tr:nth-child(odd) {
   }
 
   .reference-layout {
-    width: min(calc(100vw - 2rem), calc((100vh - 7rem) * 5 / 7));
-    width: min(calc(100vw - 2rem), calc((100dvh - 7rem) * 5 / 7));
+    --card-height: min(calc((100vw - 2rem) * 7 / 5), calc(70vh));
+    height: var(--card-height);
+    max-width: calc(100vw - 2rem);
+    padding-top: calc((100vh - var(--card-height) - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)) / 2);
   }
 
   .reference-card {
