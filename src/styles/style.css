@@ -121,7 +121,6 @@ p {
 
 .reference-layout {
   --card-height: min(calc((100vw - 4rem) * 5 / 7), calc(60vw), calc(700px * 5 / 7));
-  height: var(--card-height);
   max-width: 700px;
   margin-inline: auto;
   padding-top: calc((100vh - var(--card-height) - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)) / 2);
@@ -187,15 +186,11 @@ p {
 }
 
 .page-actions {
-  bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
   justify-content: center;
-  left: 50%;
-  position: absolute;
-  transform: translateX(-50%);
-  width: calc(100% - 2rem);
+  margin-top: 1.5rem;
 }
 
 .page-action-link,
@@ -274,7 +269,6 @@ tr:nth-child(odd) {
 
   .reference-layout {
     --card-height: min(calc((100vw - 2rem) * 7 / 5), calc(70vh));
-    height: var(--card-height);
     max-width: calc(100vw - 2rem);
     padding-top: calc((100vh - var(--card-height) - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)) / 2);
   }

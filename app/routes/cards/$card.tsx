@@ -1,3 +1,4 @@
+import PageActions from "@/components/common/PageActions";
 import StrategyDetail from "@/components/StrategyDetail";
 import { getStrategyBySlug } from "@/js/data/obliqueStrategies";
 
@@ -27,5 +28,10 @@ export async function loader({ params }: Route.LoaderArgs): Promise<LoaderData> 
 export default function CardPage({ loaderData }: Route.ComponentProps) {
   const { strategy } = loaderData;
 
-  return <StrategyDetail strategy={strategy} />;
+  return (
+    <>
+      <StrategyDetail strategy={strategy} />
+      <PageActions />
+    </>
+  );
 }
