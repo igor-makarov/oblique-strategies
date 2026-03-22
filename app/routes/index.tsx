@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useNavigate } from "react-router";
 
 import StrategyDetail from "@/components/StrategyDetail";
 import { obliqueStrategies } from "@/js/data/obliqueStrategies";
@@ -32,9 +33,11 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
 
   console.log("slug", strategy.slug);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
-    window.history.replaceState(null, "", cardRoute(strategy.slug));
-  }, [strategy.slug]);
+    navigate(cardRoute(strategy.slug), { replace: true });
+  }, [navigate, strategy.slug]);
 
   return <StrategyDetail strategy={strategy} />;
 }
