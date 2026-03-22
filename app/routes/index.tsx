@@ -25,7 +25,11 @@ export async function clientLoader() {
 }
 
 export function HydrateFallback() {
-  return <div className="page-shell page-shell-viewport" />;
+  return (
+    <div className="page-shell page-shell-viewport">
+      <div className="shuffle-spinner" />
+    </div>
+  );
 }
 
 export default function HomePage({ loaderData }: Route.ComponentProps) {
