@@ -1,5 +1,6 @@
 import { reactRouter } from "@react-router/dev/vite";
 import { defineConfig } from "vite";
+import devtoolsJson from "vite-plugin-devtools-json";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
@@ -10,5 +11,5 @@ export default defineConfig({
     allowedHosts: ["igors-macbook-air.local", "il-m-igor-ma-02.local"],
     host: true,
   },
-  plugins: [tsconfigPaths(), reactRouter()],
+  plugins: [devtoolsJson(), tsconfigPaths(), reactRouter()],
 });
