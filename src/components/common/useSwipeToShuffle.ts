@@ -1,4 +1,4 @@
-import { useCallback, type RefObject, useRef, useState } from "react";
+import { useCallback, useEffect, type RefObject, useRef } from "react";
 import { useNavigate } from "react-router";
 
 import { obliqueStrategies } from "@/js/data/obliqueStrategies";
@@ -10,9 +10,24 @@ type SwipeState = "idle" | "dragging" | "flying-left" | "flying-right";
 
 export function useSwipeToShuffle(cardRef: RefObject<HTMLElement | null>) {
   const navigate = useNavigate();
-  const [swipeState, setSwipeState] = useState<SwipeState>("idle");
   const dragOffsetXRef = useRef(0);
+  const swipeStateRef = useRef<SwipeState>("idle");
   const touchStartXRef = useRef<number | null>(null);
+
+  const setSwipeState = useCallback((nextState: SwipeState) => {
+    swipeStateRef.current = nextState;
+
+    if (cardRef.current) {
+      cardRef.current.classList.toggle(
+        "card-fly-left",
+        nextState === "flying-left",
+      );
+      cardRef.current.classList.toggle(
+        "card-fly-right",
+        nextState === "flying-right",
+      );
+    }
+  }, []);
 
   const didShuffle = useCallback(() => {
     setSwipeState("idle");
@@ -29,56 +44,71 @@ export function useSwipeToShuffle(cardRef: RefObject<HTMLElement | null>) {
     navigate(cardRoute(obliqueStrategies[randomIndex].slug));
   }, [navigate]);
 
-  const onTouchStart = useCallback(
-    (e: React.TouchEvent<HTMLElement>) => {
-      if (swipeState === "flying-left" || swipeState === "flying-right") return;
-      touchStartXRef.current = e.touches[0].clientX;
-      dragOffsetXRef.current = 0;
-    },
-    [swipeState],
-  );
+  useEffect(() => {
+    const card = cardRef.current;
 
-  const onTouchMove = useCallback(
-    (e: React.TouchEvent<HTMLElement>) => {
-      if (touchStartXRef.current === null) return;
-      if (swipeState === "flying-left" || swipeState === "flying-right") return;
-      const deltaX = e.touches[0].clientX - touchStartXRef.current;
-      dragOffsetXRef.current = deltaX;
-      if (cardRef.current) {
-        cardRef.current.style.transform = `translateX(${deltaX}px) rotate(${deltaX * 0.04}deg)`;
-        cardRef.current.style.transition = "none";
+    if (!card) {
+      return;
+    }
+
+    const onTouchStart = (event: TouchEvent) => {
+      if (
+        swipeStateRef.current === "flying-left" ||
+        swipeStateRef.current === "flying-right"
+      ) {
+        return;
       }
-      if (swipeState !== "dragging") {
+
+      const touch = event.touches[0];
+      if (!touch) {
+        return;
+      }
+
+      touchStartXRef.current = touch.clientX;
+      dragOffsetXRef.current = 0;
+    };
+
+    const onTouchMove = (event: TouchEvent) => {
+      if (touchStartXRef.current === null) return;
+      if (
+        swipeStateRef.current === "flying-left" ||
+        swipeStateRef.current === "flying-right"
+      ) {
+        return;
+      }
+
+      const touch = event.touches[0];
+      if (!touch) {
+        return;
+      }
+
+      const deltaX = touch.clientX - touchStartXRef.current;
+      dragOffsetXRef.current = deltaX;
+      card.style.transform = `translateX(${deltaX}px) rotate(${deltaX * 0.04}deg)`;
+      card.style.transition = "none";
+
+      if (swipeStateRef.current !== "dragging") {
         setSwipeState("dragging");
       }
-    },
-    [swipeState],
-  );
+    };
 
-  const onTouchEnd = useCallback(() => {
-    if (touchStartXRef.current === null) return;
-    const currentOffset = dragOffsetXRef.current;
-    touchStartXRef.current = null;
-    dragOffsetXRef.current = 0;
+    const onTouchEnd = () => {
+      if (touchStartXRef.current === null) return;
+      const currentOffset = dragOffsetXRef.current;
+      touchStartXRef.current = null;
+      dragOffsetXRef.current = 0;
 
-    if (Math.abs(currentOffset) >= SWIPE_THRESHOLD) {
-      const direction = currentOffset > 0 ? "flying-right" : "flying-left";
-      if (cardRef.current) {
-        cardRef.current.style.setProperty("--swipe-x", `${currentOffset}px`);
-        cardRef.current.style.setProperty(
-          "--swipe-rotate",
-          `${currentOffset * 0.04}deg`,
-        );
-        cardRef.current.style.transform = "";
-        cardRef.current.style.transition = "";
-      }
-      setSwipeState(direction);
-    } else {
-      if (cardRef.current) {
-        cardRef.current.style.transition =
+      if (Math.abs(currentOffset) >= SWIPE_THRESHOLD) {
+        const direction = currentOffset > 0 ? "flying-right" : "flying-left";
+        card.style.setProperty("--swipe-x", `${currentOffset}px`);
+        card.style.setProperty("--swipe-rotate", `${currentOffset * 0.04}deg`);
+        card.style.transform = "";
+        card.style.transition = "";
+        setSwipeState(direction);
+      } else {
+        card.style.transition =
           "transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)";
-        cardRef.current.style.transform = "";
-        const card = cardRef.current;
+        card.style.transform = "";
         card.addEventListener(
           "transitionend",
           () => {
@@ -86,30 +116,33 @@ export function useSwipeToShuffle(cardRef: RefObject<HTMLElement | null>) {
           },
           { once: true },
         );
+        setSwipeState("idle");
       }
-      setSwipeState("idle");
-    }
-  }, []);
+    };
 
-  const onAnimationEnd = useCallback(() => {
-    if (swipeState === "flying-left" || swipeState === "flying-right") {
-      shuffleToRandomCard();
-    }
-  }, [swipeState, shuffleToRandomCard]);
+    const onAnimationEnd = () => {
+      if (
+        swipeStateRef.current === "flying-left" ||
+        swipeStateRef.current === "flying-right"
+      ) {
+        shuffleToRandomCard();
+      }
+    };
 
-  const cardClassName =
-    swipeState === "flying-left"
-      ? "card-fly-left"
-      : swipeState === "flying-right"
-        ? "card-fly-right"
-        : undefined;
+    card.addEventListener("touchstart", onTouchStart);
+    card.addEventListener("touchmove", onTouchMove);
+    card.addEventListener("touchend", onTouchEnd);
+    card.addEventListener("animationend", onAnimationEnd);
+
+    return () => {
+      card.removeEventListener("touchstart", onTouchStart);
+      card.removeEventListener("touchmove", onTouchMove);
+      card.removeEventListener("touchend", onTouchEnd);
+      card.removeEventListener("animationend", onAnimationEnd);
+    };
+  }, [setSwipeState, shuffleToRandomCard]);
 
   return {
-    cardClassName,
     didShuffle,
-    onTouchStart,
-    onTouchMove,
-    onTouchEnd,
-    onAnimationEnd,
   };
 }

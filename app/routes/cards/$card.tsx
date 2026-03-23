@@ -43,14 +43,7 @@ export default function CardPage({ loaderData }: Route.ComponentProps) {
   const theme = getStrategyTheme(strategy);
   const accentStyle = { color: theme.accent };
   const cardRef = useRef<HTMLElement | null>(null);
-  const {
-    cardClassName,
-    didShuffle,
-    onTouchStart,
-    onTouchMove,
-    onTouchEnd,
-    onAnimationEnd,
-  } = useSwipeToShuffle(cardRef);
+  const { didShuffle } = useSwipeToShuffle(cardRef);
 
   useEffect(() => {
     didShuffle();
@@ -58,14 +51,7 @@ export default function CardPage({ loaderData }: Route.ComponentProps) {
 
   return (
     <>
-      <CardLayout
-        cardRef={cardRef}
-        cardClassName={cardClassName}
-        onTouchStart={onTouchStart}
-        onTouchMove={onTouchMove}
-        onTouchEnd={onTouchEnd}
-        onAnimationEnd={onAnimationEnd}
-      >
+      <CardLayout cardRef={cardRef}>
         <div className="strategy-kicker" style={accentStyle}>
           Oblique Strategies
         </div>
