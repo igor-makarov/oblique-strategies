@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 
 import { obliqueStrategies } from "@/js/data/obliqueStrategies";
@@ -8,12 +8,22 @@ const SWIPE_THRESHOLD = 80;
 
 type SwipeState = "idle" | "dragging" | "flying-left" | "flying-right";
 
-export function useSwipeToShuffle() {
+export function useSwipeToShuffle(slug: string) {
   const navigate = useNavigate();
   const [swipeState, setSwipeState] = useState<SwipeState>("idle");
   const dragOffsetXRef = useRef(0);
   const touchStartXRef = useRef<number | null>(null);
   const cardRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    setSwipeState("idle");
+    if (cardRef.current) {
+      cardRef.current.style.transform = "";
+      cardRef.current.style.transition = "";
+      cardRef.current.style.removeProperty("--swipe-x");
+      cardRef.current.style.removeProperty("--swipe-rotate");
+    }
+  }, [slug]);
 
   const shuffleToRandomCard = useCallback(() => {
     const randomIndex = Math.floor(Math.random() * obliqueStrategies.length);

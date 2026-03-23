@@ -37,7 +37,7 @@ export default function CardPage({ loaderData }: Route.ComponentProps) {
   const { strategy } = loaderData;
   const theme = getStrategyTheme(strategy);
   const accentStyle = { color: theme.accent };
-  const { cardRef, cardClassName, onTouchStart, onTouchMove, onTouchEnd, onAnimationEnd } = useSwipeToShuffle();
+  const { cardRef, cardClassName, onTouchStart, onTouchMove, onTouchEnd, onAnimationEnd } = useSwipeToShuffle(strategy.slug);
 
   return (
     <>
