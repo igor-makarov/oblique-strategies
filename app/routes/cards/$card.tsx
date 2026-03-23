@@ -1,5 +1,5 @@
+import CardLayout from "@/components/common/CardLayout";
 import PageActions from "@/components/common/PageActions";
-import StrategyDetail from "@/components/StrategyDetail";
 import { getStrategyBySlug, obliqueStrategies } from "@/js/data/obliqueStrategies";
 import { getStrategyTheme } from "@/js/utils/getStrategyTheme";
 import type { SitemapHandle } from "@forge42/seo-tools/remix/sitemap";
@@ -34,10 +34,17 @@ export async function loader({ params }: Route.LoaderArgs) {
 
 export default function CardPage({ loaderData }: Route.ComponentProps) {
   const { strategy } = loaderData;
+  const theme = getStrategyTheme(strategy);
+  const accentStyle = { color: theme.accent };
 
   return (
     <>
-      <StrategyDetail strategy={strategy} />
+      <CardLayout>
+        <div className="strategy-kicker" style={accentStyle}>
+          Oblique Strategies
+        </div>
+        <h1 className="strategy-message">{strategy.message}</h1>
+      </CardLayout>
       <PageActions />
     </>
   );
