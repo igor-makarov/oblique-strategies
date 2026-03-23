@@ -18,10 +18,8 @@ export function meta() {
   ];
 }
 
-export async function clientLoader() {
-  const randomIndex = Math.floor(Math.random() * obliqueStrategies.length);
-  const strategy = obliqueStrategies[randomIndex];
-  return { to: cardRoute(strategy.slug) };
+export async function loader() {
+  return { slugs: obliqueStrategies.map((s) => s.slug) };
 }
 
 export function HydrateFallback() {
@@ -33,5 +31,8 @@ export function HydrateFallback() {
 }
 
 export default function HomePage({ loaderData }: Route.ComponentProps) {
-  return <Navigate to={loaderData.to} replace />;
+  const { slugs } = loaderData;
+  const randomSlug = slugs[Math.floor(Math.random() * slugs.length)];
+
+  return <Navigate to={cardRoute(randomSlug)} replace />;
 }
