@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 
 import ShuffleLink from "@/components/common/ShuffleLink";
-import { obliqueStrategies } from "@/js/data/obliqueStrategies";
+import { obliqueStrategies, type StrategyCard } from "@/js/data/obliqueStrategies";
 import { cardRoute } from "@/js/utils/collectStrategyRoutes";
 
 const pageTitle = "All Cards";
@@ -11,8 +11,8 @@ export function meta() {
   return [{ title: pageTitle }];
 }
 
-function buildColumns<T>(items: T[], count: number): T[][] {
-  const columns = Array.from({ length: count }, () => [] as T[]);
+function buildColumns(items: readonly StrategyCard[], count: number): StrategyCard[][] {
+  const columns = Array.from({ length: count }, () => [] as StrategyCard[]);
 
   items.forEach((item, index) => {
     columns[index % count].push(item);
