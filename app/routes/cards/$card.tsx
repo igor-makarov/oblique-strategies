@@ -9,7 +9,7 @@ import type { Route } from "./+types/$card";
 const pageTitle = "Oblique Strategies";
 
 export const handle: SitemapHandle<unknown> = {
-  sitemap: (domain, url) =>
+  sitemap: (domain) =>
     obliqueStrategies.map((strategy) => ({
       route: `${domain}/cards/${strategy.slug}`,
     })),
