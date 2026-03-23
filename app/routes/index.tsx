@@ -22,6 +22,13 @@ export async function loader() {
   return { slugs: obliqueStrategies.map((s) => s.slug) };
 }
 
+export async function clientLoader({ serverLoader }: Route.ClientLoaderArgs) {
+  const { slugs } = await serverLoader();
+  const randomSlug = slugs[Math.floor(Math.random() * slugs.length)];
+  return { to: cardRoute(randomSlug) };
+}
+clientLoader.hydrate = true as const;
+
 export function HydrateFallback() {
   return (
     <CardLayout>
@@ -31,8 +38,5 @@ export function HydrateFallback() {
 }
 
 export default function HomePage({ loaderData }: Route.ComponentProps) {
-  const { slugs } = loaderData;
-  const randomSlug = slugs[Math.floor(Math.random() * slugs.length)];
-
-  return <Navigate to={cardRoute(randomSlug)} replace />;
+  return <Navigate to={loaderData.to} replace />;
 }
