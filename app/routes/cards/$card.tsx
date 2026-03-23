@@ -24,19 +24,6 @@ export async function loader({ params }: Route.LoaderArgs) {
   return { strategy, background };
 }
 
-export async function clientLoader({ params }: Route.ClientLoaderArgs) {
-  const slug = params.card;
-  const strategy = getStrategyBySlug(slug);
-
-  if (!strategy) {
-    throw new Response("Not Found", { status: 404 });
-  }
-
-  const { background } = getStrategyTheme(strategy.id);
-
-  return { strategy, background };
-}
-
 export default function CardPage({ loaderData }: Route.ComponentProps) {
   const { strategy } = loaderData;
 
