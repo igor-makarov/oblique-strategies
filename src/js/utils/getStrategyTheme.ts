@@ -8,7 +8,7 @@ export interface StrategyTheme {
 }
 
 export function getStrategyTheme(strategy: StrategyCard): StrategyTheme {
-  const hue = hashCode(strategy.message) % 360;
+  const hue = hashCode(strategy.slug) % 360;
   const accent = `hsl(${hue} 65% 34%)`;
   const background = `hsl(${hue} 72% 91%)`;
 
