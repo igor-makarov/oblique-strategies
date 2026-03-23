@@ -1,7 +1,12 @@
+import { useEffect, useRef } from "react";
+
 import CardLayout from "@/components/common/CardLayout";
 import PageActions from "@/components/common/PageActions";
 import { useSwipeToShuffle } from "@/components/common/useSwipeToShuffle";
-import { getStrategyBySlug, obliqueStrategies } from "@/js/data/obliqueStrategies";
+import {
+  getStrategyBySlug,
+  obliqueStrategies,
+} from "@/js/data/obliqueStrategies";
 import { getStrategyTheme } from "@/js/utils/getStrategyTheme";
 import type { SitemapHandle } from "@forge42/seo-tools/remix/sitemap";
 
@@ -37,7 +42,19 @@ export default function CardPage({ loaderData }: Route.ComponentProps) {
   const { strategy } = loaderData;
   const theme = getStrategyTheme(strategy);
   const accentStyle = { color: theme.accent };
-  const { cardRef, cardClassName, onTouchStart, onTouchMove, onTouchEnd, onAnimationEnd } = useSwipeToShuffle(strategy.slug);
+  const cardRef = useRef<HTMLElement | null>(null);
+  const {
+    cardClassName,
+    didShuffle,
+    onTouchStart,
+    onTouchMove,
+    onTouchEnd,
+    onAnimationEnd,
+  } = useSwipeToShuffle(cardRef);
+
+  useEffect(() => {
+    didShuffle();
+  }, [didShuffle, strategy.slug]);
 
   return (
     <>

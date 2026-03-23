@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, type RefObject, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 
 import { obliqueStrategies } from "@/js/data/obliqueStrategies";
@@ -8,14 +8,13 @@ const SWIPE_THRESHOLD = 80;
 
 type SwipeState = "idle" | "dragging" | "flying-left" | "flying-right";
 
-export function useSwipeToShuffle(slug: string) {
+export function useSwipeToShuffle(cardRef: RefObject<HTMLElement | null>) {
   const navigate = useNavigate();
   const [swipeState, setSwipeState] = useState<SwipeState>("idle");
   const dragOffsetXRef = useRef(0);
   const touchStartXRef = useRef<number | null>(null);
-  const cardRef = useRef<HTMLElement | null>(null);
 
-  useEffect(() => {
+  const didShuffle = useCallback(() => {
     setSwipeState("idle");
     if (cardRef.current) {
       cardRef.current.style.transform = "";
@@ -23,7 +22,7 @@ export function useSwipeToShuffle(slug: string) {
       cardRef.current.style.removeProperty("--swipe-x");
       cardRef.current.style.removeProperty("--swipe-rotate");
     }
-  }, [slug]);
+  }, [cardRef]);
 
   const shuffleToRandomCard = useCallback(() => {
     const randomIndex = Math.floor(Math.random() * obliqueStrategies.length);
@@ -66,14 +65,18 @@ export function useSwipeToShuffle(slug: string) {
       const direction = currentOffset > 0 ? "flying-right" : "flying-left";
       if (cardRef.current) {
         cardRef.current.style.setProperty("--swipe-x", `${currentOffset}px`);
-        cardRef.current.style.setProperty("--swipe-rotate", `${currentOffset * 0.04}deg`);
+        cardRef.current.style.setProperty(
+          "--swipe-rotate",
+          `${currentOffset * 0.04}deg`,
+        );
         cardRef.current.style.transform = "";
         cardRef.current.style.transition = "";
       }
       setSwipeState(direction);
     } else {
       if (cardRef.current) {
-        cardRef.current.style.transition = "transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)";
+        cardRef.current.style.transition =
+          "transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)";
         cardRef.current.style.transform = "";
         const card = cardRef.current;
         card.addEventListener(
@@ -101,5 +104,12 @@ export function useSwipeToShuffle(slug: string) {
         ? "card-fly-right"
         : undefined;
 
-  return { cardRef, cardClassName, onTouchStart, onTouchMove, onTouchEnd, onAnimationEnd };
+  return {
+    cardClassName,
+    didShuffle,
+    onTouchStart,
+    onTouchMove,
+    onTouchEnd,
+    onAnimationEnd,
+  };
 }
