@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 
+import ShuffleLink from "@/components/common/ShuffleLink";
 import { obliqueStrategies } from "@/js/data/obliqueStrategies";
 import { cardRoute } from "@/js/utils/collectStrategyRoutes";
 
@@ -31,7 +32,7 @@ export default function CardsIndexPage() {
           <p>
             All {obliqueStrategies.length} cards are available as pre-generated static pages.
             <span className="browse-header-links">
-              <Link to="/">Shuffle a card</Link>
+              <ShuffleLink>Shuffle a card</ShuffleLink>
             </span>
           </p>
         </div>
