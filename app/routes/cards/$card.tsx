@@ -1,5 +1,6 @@
 import CardLayout from "@/components/common/CardLayout";
 import PageActions from "@/components/common/PageActions";
+import { useSwipeToShuffle } from "@/components/common/useSwipeToShuffle";
 import { getStrategyBySlug, obliqueStrategies } from "@/js/data/obliqueStrategies";
 import { getStrategyTheme } from "@/js/utils/getStrategyTheme";
 import type { SitemapHandle } from "@forge42/seo-tools/remix/sitemap";
@@ -36,10 +37,18 @@ export default function CardPage({ loaderData }: Route.ComponentProps) {
   const { strategy } = loaderData;
   const theme = getStrategyTheme(strategy);
   const accentStyle = { color: theme.accent };
+  const { cardRef, cardClassName, onTouchStart, onTouchMove, onTouchEnd, onAnimationEnd } = useSwipeToShuffle();
 
   return (
     <>
-      <CardLayout>
+      <CardLayout
+        cardRef={cardRef}
+        cardClassName={cardClassName}
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
+        onAnimationEnd={onAnimationEnd}
+      >
         <div className="strategy-kicker" style={accentStyle}>
           Oblique Strategies
         </div>

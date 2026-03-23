@@ -139,6 +139,7 @@ p {
   max-height: calc(100dvh - 10rem);
   padding: clamp(1.5rem, 3vw, 3rem);
   text-align: center;
+  touch-action: pan-y;
   width: 100%;
 }
 
@@ -164,6 +165,38 @@ p {
   to {
     transform: rotate(360deg);
   }
+}
+
+@keyframes card-fly-left {
+  from {
+    transform: translateX(var(--swipe-x, 0px)) rotate(var(--swipe-rotate, 0deg));
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-150vw) rotate(-20deg);
+    opacity: 0;
+  }
+}
+
+@keyframes card-fly-right {
+  from {
+    transform: translateX(var(--swipe-x, 0px)) rotate(var(--swipe-rotate, 0deg));
+    opacity: 1;
+  }
+  to {
+    transform: translateX(150vw) rotate(20deg);
+    opacity: 0;
+  }
+}
+
+.card-fly-left {
+  animation: card-fly-left 0.4s ease-in forwards;
+  pointer-events: none;
+}
+
+.card-fly-right {
+  animation: card-fly-right 0.4s ease-in forwards;
+  pointer-events: none;
 }
 
 .shuffle-spinner {
