@@ -1,5 +1,5 @@
 import { useCallback, useEffect, type RefObject, useRef } from "react";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 
 import { obliqueStrategies } from "@/js/data/obliqueStrategies";
 import { cardRoute } from "@/js/utils/collectStrategyRoutes";
@@ -8,7 +8,11 @@ const SWIPE_THRESHOLD = 80;
 
 type SwipeState = "idle" | "dragging" | "flying-left" | "flying-right";
 
-export function useSwipeToShuffle(cardRef: RefObject<HTMLElement | null>) {
+export function useSwipeToShuffle(
+  cardRef: RefObject<HTMLElement | null>,
+  didShuffle: () => void,
+) {
+  const location = useLocation();
   const navigate = useNavigate();
   const dragOffsetXRef = useRef(0);
   const swipeStateRef = useRef<SwipeState>("idle");
@@ -29,20 +33,15 @@ export function useSwipeToShuffle(cardRef: RefObject<HTMLElement | null>) {
     }
   }, []);
 
-  const didShuffle = useCallback(() => {
-    setSwipeState("idle");
-    if (cardRef.current) {
-      cardRef.current.style.transform = "";
-      cardRef.current.style.transition = "";
-      cardRef.current.style.removeProperty("--swipe-x");
-      cardRef.current.style.removeProperty("--swipe-rotate");
-    }
-  }, [cardRef]);
-
   const shuffleToRandomCard = useCallback(() => {
     const randomIndex = Math.floor(Math.random() * obliqueStrategies.length);
     navigate(cardRoute(obliqueStrategies[randomIndex].slug));
   }, [navigate]);
+
+  useEffect(() => {
+    setSwipeState("idle");
+    didShuffle();
+  }, [didShuffle, location.pathname, setSwipeState]);
 
   useEffect(() => {
     const card = cardRef.current;
@@ -141,8 +140,4 @@ export function useSwipeToShuffle(cardRef: RefObject<HTMLElement | null>) {
       card.removeEventListener("animationend", onAnimationEnd);
     };
   }, [setSwipeState, shuffleToRandomCard]);
-
-  return {
-    didShuffle,
-  };
 }

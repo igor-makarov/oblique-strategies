@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useRef } from "react";
 
 import CardLayout from "@/components/common/CardLayout";
 import PageActions from "@/components/common/PageActions";
@@ -43,11 +43,15 @@ export default function CardPage({ loaderData }: Route.ComponentProps) {
   const theme = getStrategyTheme(strategy);
   const accentStyle = { color: theme.accent };
   const cardRef = useRef<HTMLElement | null>(null);
-  const { didShuffle } = useSwipeToShuffle(cardRef);
-
-  useEffect(() => {
-    didShuffle();
-  }, [didShuffle, strategy.slug]);
+  const didShuffle = useCallback(() => {
+    if (cardRef.current) {
+      cardRef.current.style.transform = "";
+      cardRef.current.style.transition = "";
+      cardRef.current.style.removeProperty("--swipe-x");
+      cardRef.current.style.removeProperty("--swipe-rotate");
+    }
+  }, []);
+  useSwipeToShuffle(cardRef, didShuffle);
 
   return (
     <>
