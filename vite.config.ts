@@ -18,12 +18,25 @@ function lanServer(): Plugin {
   };
 }
 
+function additionalHotReloadFiles(): Plugin {
+  return {
+    name: "additional-hot-reload-files",
+    handleHotUpdate({ file, server }) {
+      if (!file.endsWith("/src/js/data/obliqueStrategies.ts")) return;
+
+      server.ws.send({ type: "full-reload" });
+      return [];
+    },
+  };
+}
+
 export default defineConfig({
   build: {
     assetsDir: (process.env.BASE_URL || "/").substring(1) + "assets/",
   },
   plugins: [
     lanServer(),
+    additionalHotReloadFiles(),
     devtoolsJson(),
     tsconfigPaths(),
     reactRouter(),
