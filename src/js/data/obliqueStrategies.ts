@@ -60,7 +60,7 @@ export const obliqueStrategies = defineStrategies([
     slug: "breathe-more-deeply",
   },
   {
-    message: "Bridges -build -burn",
+    message: "Bridges\n-build\n-burn",
     slug: "bridges-build-burn",
   },
   {
@@ -316,7 +316,7 @@ export const obliqueStrategies = defineStrategies([
     slug: "the-most-easily-forgotten-thing-is-the-most-important",
   },
   {
-    message: "Think - inside the work -outside the work",
+    message: "Think\n-inside the work\n-outside the work",
     slug: "think-inside-the-work-outside-the-work",
   },
   {

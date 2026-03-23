@@ -43,7 +43,9 @@ export default function CardPage({ loaderData }: Route.ComponentProps) {
         <div className="strategy-kicker" style={accentStyle}>
           Oblique Strategies
         </div>
-        <h1 className="strategy-message">{strategy.message}</h1>
+        <h1 className="strategy-message">
+          <span style={{ whiteSpace: "pre-line" }}>{strategy.message}</span>
+        </h1>
       </CardLayout>
       <PageActions />
     </>
