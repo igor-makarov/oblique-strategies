@@ -9,12 +9,9 @@ body {
   background: #f6f3ea;
 }
 
-a {
-  color: inherit;
-}
-
+a,
 a:visited {
-  color: inherit;
+  color: rgba(23, 23, 23, 0.72);
 }
 
 * {
@@ -35,19 +32,20 @@ p {
     "Droid Sans Mono", "Courier New", monospace;
 }
 
-.row {
-  margin-bottom: 10px;
-}
-
-.row.four-across {
+.strategy-grid {
+  align-items: stretch;
   display: grid;
-  gap: 10px;
-  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  grid-auto-rows: 1fr;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
-.column {
+.strategy-grid-item {
+  align-items: center;
+  border: 1px solid rgba(23, 23, 23, 0.12);
   display: flex;
-  flex-direction: column;
+  line-height: 1.45;
+  padding: 0.3rem 0.6rem;
 }
 
 .page-shell {
@@ -185,14 +183,6 @@ p {
   margin-top: 2.5rem;
 }
 
-.page-actions a,
-.page-actions a:visited {
-  color: rgba(23, 23, 23, 0.72);
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.2em;
-}
-
 
 .browse-layout {
   margin: 0 auto;
@@ -219,38 +209,12 @@ p {
 .browse-header-links {
   display: inline-block;
   margin-left: 0.5rem;
-  text-decoration: underline;
 }
 
-table {
-  background: rgba(255, 255, 255, 0.78);
-  border: 1px solid #ddd;
-  border-collapse: collapse;
-  border-spacing: 0;
-  width: 100%;
-}
-
-th,
-td {
-  text-align: left;
-}
-
-th {
-  background: rgba(23, 23, 23, 0.07);
-  padding: 0.85rem 1rem;
-}
-
-td {
-  padding: 0.8rem 1rem;
-}
-
-tr:nth-child(odd) {
-  background-color: rgba(23, 23, 23, 0.03);
-}
 
 @media screen and (max-width: 900px) {
-  .row.four-across {
-    grid-template-columns: repeat(2, 1fr);
+  .strategy-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -271,7 +235,7 @@ tr:nth-child(odd) {
     padding: 1.25rem;
   }
 
-  .row.four-across {
+  .strategy-grid {
     grid-template-columns: 1fr;
   }
 
