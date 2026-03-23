@@ -27,7 +27,7 @@ export async function loader({ params }: Route.LoaderArgs) {
     throw new Response("Not Found", { status: 404 });
   }
 
-  const { background } = getStrategyTheme(strategy.id);
+  const { background } = getStrategyTheme(strategy);
 
   return { strategy, background };
 }

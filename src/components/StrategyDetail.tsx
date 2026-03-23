@@ -7,7 +7,7 @@ interface Props {
 }
 
 export default function StrategyDetail({ strategy }: Props) {
-  const theme = getStrategyTheme(strategy.id);
+  const theme = getStrategyTheme(strategy);
   const accentStyle = { color: theme.accent };
 
   return (
