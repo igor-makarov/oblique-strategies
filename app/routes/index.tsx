@@ -1,4 +1,4 @@
-import { Navigate, PrefetchPageLinks } from "react-router";
+import { Navigate } from "react-router";
 
 import CardLayout from "@/components/common/CardLayout";
 import { obliqueStrategies } from "@/js/data/obliqueStrategies";
@@ -18,21 +18,14 @@ export function meta() {
   ];
 }
 
-export async function loader() {
-  return { slugs: obliqueStrategies.map((s) => s.slug) };
+export async function clientLoader() {
+  const randomIndex = Math.floor(Math.random() * obliqueStrategies.length);
+  return { to: cardRoute(obliqueStrategies[randomIndex].slug) };
 }
-
-export async function clientLoader({ serverLoader }: Route.ClientLoaderArgs) {
-  const { slugs } = await serverLoader();
-  const randomSlug = slugs[Math.floor(Math.random() * slugs.length)];
-  return { to: cardRoute(randomSlug) };
-}
-clientLoader.hydrate = true as const;
 
 export function HydrateFallback() {
   return (
     <CardLayout>
-      <PrefetchPageLinks page={cardRoute(obliqueStrategies[0].slug)} />
       <div className="shuffle-spinner" />
     </CardLayout>
   );
