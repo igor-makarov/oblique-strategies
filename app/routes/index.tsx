@@ -1,4 +1,4 @@
-import { Navigate } from "react-router";
+import { Navigate, PrefetchPageLinks } from "react-router";
 
 import CardLayout from "@/components/common/CardLayout";
 import { obliqueStrategies } from "@/js/data/obliqueStrategies";
@@ -32,6 +32,7 @@ clientLoader.hydrate = true as const;
 export function HydrateFallback() {
   return (
     <CardLayout>
+      <PrefetchPageLinks page={cardRoute(obliqueStrategies[0].slug)} />
       <div className="shuffle-spinner" />
     </CardLayout>
   );
