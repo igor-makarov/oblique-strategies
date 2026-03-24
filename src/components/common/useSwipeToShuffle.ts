@@ -107,6 +107,7 @@ export function useSwipeToShuffle(
         card.style.transform = "";
         card.style.transition = "";
         setSwipeState(direction);
+        onShuffleComplete();
       } else {
         card.style.transition =
           "transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)";
@@ -122,26 +123,14 @@ export function useSwipeToShuffle(
       }
     };
 
-    const onAnimationEnd = () => {
-      if (
-        swipeStateRef.current === "flying-left" ||
-        swipeStateRef.current === "flying-right"
-      ) {
-        resetCard();
-        onShuffleComplete();
-      }
-    };
-
     card.addEventListener("touchstart", onTouchStart);
     card.addEventListener("touchmove", onTouchMove);
     card.addEventListener("touchend", onTouchEnd);
-    card.addEventListener("animationend", onAnimationEnd);
 
     return () => {
       card.removeEventListener("touchstart", onTouchStart);
       card.removeEventListener("touchmove", onTouchMove);
       card.removeEventListener("touchend", onTouchEnd);
-      card.removeEventListener("animationend", onAnimationEnd);
     };
   }, [onShuffleComplete, resetCard, setSwipeState]);
 }
