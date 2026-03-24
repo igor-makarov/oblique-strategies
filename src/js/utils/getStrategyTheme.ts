@@ -1,4 +1,4 @@
-import { getStrategyIndex, type StrategyCard } from "../data/obliqueStrategies";
+import { type StrategyCard, getStrategyIndex } from "../data/obliqueStrategies";
 
 export interface StrategyTheme {
   accent: string;

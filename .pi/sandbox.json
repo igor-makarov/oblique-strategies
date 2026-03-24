@@ -1,7 +1,5 @@
 {
   "network": {
-    "allowUnixSockets": [
-      "~/.chrome/ego-cdp.sock"
-    ]
+    "allowUnixSockets": ["~/.chrome/ego-cdp.sock"]
   }
 }

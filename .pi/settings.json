@@ -1,5 +1,3 @@
 {
-  "packages": [
-    "https://github.com/igor-makarov/ego-cdp"
-  ]
+  "packages": ["https://github.com/igor-makarov/ego-cdp"]
 }
