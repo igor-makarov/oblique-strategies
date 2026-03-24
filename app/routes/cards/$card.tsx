@@ -1,6 +1,14 @@
+import { useCallback, useMemo, useRef } from "react";
+import { useNavigate } from "react-router";
+
 import CardLayout from "@/components/common/CardLayout";
 import PageActions from "@/components/common/PageActions";
-import { getStrategyBySlug, obliqueStrategies } from "@/js/data/obliqueStrategies";
+import { useSwipeToShuffle } from "@/components/common/useSwipeToShuffle";
+import {
+  getStrategyBySlug,
+  obliqueStrategies,
+} from "@/js/data/obliqueStrategies";
+import { cardRoute } from "@/js/utils/collectStrategyRoutes";
 import { getStrategyTheme } from "@/js/utils/getStrategyTheme";
 import type { SitemapHandle } from "@forge42/seo-tools/remix/sitemap";
 
@@ -33,13 +41,35 @@ export async function loader({ params }: Route.LoaderArgs) {
 }
 
 export default function CardPage({ loaderData }: Route.ComponentProps) {
+  const navigate = useNavigate();
   const { strategy } = loaderData;
   const theme = getStrategyTheme(strategy);
   const accentStyle = { color: theme.accent };
+  const cardRef = useRef<HTMLElement | null>(null);
+  const currentStrategyIndex = useMemo(
+    () => obliqueStrategies.findIndex(({ slug }) => slug === strategy.slug),
+    [strategy.slug],
+  );
+  const handleShuffle = useCallback(() => {
+    if (obliqueStrategies.length <= 1 || currentStrategyIndex === -1) {
+      return;
+    }
+
+    const randomIndexExcludingCurrent = Math.floor(
+      Math.random() * (obliqueStrategies.length - 1),
+    );
+    const randomIndex =
+      randomIndexExcludingCurrent >= currentStrategyIndex
+        ? randomIndexExcludingCurrent + 1
+        : randomIndexExcludingCurrent;
+
+    navigate(cardRoute(obliqueStrategies[randomIndex].slug));
+  }, [currentStrategyIndex, navigate]);
+  useSwipeToShuffle(cardRef, handleShuffle);
 
   return (
     <>
-      <CardLayout>
+      <CardLayout cardRef={cardRef}>
         <div className="strategy-kicker" style={accentStyle}>
           Oblique Strategies
         </div>
