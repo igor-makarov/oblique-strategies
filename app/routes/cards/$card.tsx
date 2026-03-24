@@ -1,4 +1,5 @@
-import { useCallback, useRef } from "react";
+import { useCallback, useMemo, useRef } from "react";
+import { useNavigate } from "react-router";
 
 import CardLayout from "@/components/common/CardLayout";
 import PageActions from "@/components/common/PageActions";
@@ -7,6 +8,7 @@ import {
   getStrategyBySlug,
   obliqueStrategies,
 } from "@/js/data/obliqueStrategies";
+import { cardRoute } from "@/js/utils/collectStrategyRoutes";
 import { getStrategyTheme } from "@/js/utils/getStrategyTheme";
 import type { SitemapHandle } from "@forge42/seo-tools/remix/sitemap";
 
@@ -39,19 +41,31 @@ export async function loader({ params }: Route.LoaderArgs) {
 }
 
 export default function CardPage({ loaderData }: Route.ComponentProps) {
+  const navigate = useNavigate();
   const { strategy } = loaderData;
   const theme = getStrategyTheme(strategy);
   const accentStyle = { color: theme.accent };
   const cardRef = useRef<HTMLElement | null>(null);
-  const didShuffle = useCallback(() => {
-    if (cardRef.current) {
-      cardRef.current.style.transform = "";
-      cardRef.current.style.transition = "";
-      cardRef.current.style.removeProperty("--swipe-x");
-      cardRef.current.style.removeProperty("--swipe-rotate");
+  const currentStrategyIndex = useMemo(
+    () => obliqueStrategies.findIndex(({ slug }) => slug === strategy.slug),
+    [strategy.slug],
+  );
+  const handleShuffle = useCallback(() => {
+    if (obliqueStrategies.length <= 1 || currentStrategyIndex === -1) {
+      return;
     }
-  }, []);
-  useSwipeToShuffle(cardRef, didShuffle);
+
+    const randomIndexExcludingCurrent = Math.floor(
+      Math.random() * (obliqueStrategies.length - 1),
+    );
+    const randomIndex =
+      randomIndexExcludingCurrent >= currentStrategyIndex
+        ? randomIndexExcludingCurrent + 1
+        : randomIndexExcludingCurrent;
+
+    navigate(cardRoute(obliqueStrategies[randomIndex].slug));
+  }, [currentStrategyIndex, navigate]);
+  useSwipeToShuffle(cardRef, handleShuffle);
 
   return (
     <>

@@ -1,8 +1,5 @@
 import { useCallback, useEffect, type RefObject, useRef } from "react";
-import { useLocation, useNavigate } from "react-router";
-
-import { obliqueStrategies } from "@/js/data/obliqueStrategies";
-import { cardRoute } from "@/js/utils/collectStrategyRoutes";
+import { useLocation } from "react-router";
 
 const SWIPE_THRESHOLD = 80;
 
@@ -10,10 +7,9 @@ type SwipeState = "idle" | "dragging" | "flying-left" | "flying-right";
 
 export function useSwipeToShuffle(
   cardRef: RefObject<HTMLElement | null>,
-  didShuffle: () => void,
+  onShuffleComplete: () => void,
 ) {
   const location = useLocation();
-  const navigate = useNavigate();
   const dragOffsetXRef = useRef(0);
   const swipeStateRef = useRef<SwipeState>("idle");
   const touchStartXRef = useRef<number | null>(null);
@@ -33,15 +29,22 @@ export function useSwipeToShuffle(
     }
   }, []);
 
-  const shuffleToRandomCard = useCallback(() => {
-    const randomIndex = Math.floor(Math.random() * obliqueStrategies.length);
-    navigate(cardRoute(obliqueStrategies[randomIndex].slug));
-  }, [navigate]);
+  const resetCard = useCallback(() => {
+    touchStartXRef.current = null;
+    dragOffsetXRef.current = 0;
+    setSwipeState("idle");
+
+    if (cardRef.current) {
+      cardRef.current.style.transform = "";
+      cardRef.current.style.transition = "";
+      cardRef.current.style.removeProperty("--swipe-x");
+      cardRef.current.style.removeProperty("--swipe-rotate");
+    }
+  }, [cardRef, setSwipeState]);
 
   useEffect(() => {
-    setSwipeState("idle");
-    didShuffle();
-  }, [didShuffle, location.pathname, setSwipeState]);
+    resetCard();
+  }, [location.pathname, resetCard]);
 
   useEffect(() => {
     const card = cardRef.current;
@@ -124,7 +127,8 @@ export function useSwipeToShuffle(
         swipeStateRef.current === "flying-left" ||
         swipeStateRef.current === "flying-right"
       ) {
-        shuffleToRandomCard();
+        resetCard();
+        onShuffleComplete();
       }
     };
 
@@ -139,5 +143,5 @@ export function useSwipeToShuffle(
       card.removeEventListener("touchend", onTouchEnd);
       card.removeEventListener("animationend", onAnimationEnd);
     };
-  }, [setSwipeState, shuffleToRandomCard]);
+  }, [onShuffleComplete, resetCard, setSwipeState]);
 }
