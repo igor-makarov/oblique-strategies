@@ -2,17 +2,62 @@ import { useCallback, useEffect, type RefObject, useRef } from "react";
 import { useLocation } from "react-router";
 
 const SWIPE_THRESHOLD = 80;
+const DEFAULT_SHUFFLE_CALLBACK_PERCENT = 80;
+const VALID_SHUFFLE_CALLBACK_PERCENTS = new Set([40, 50, 60, 70, 80, 90]);
 
 type SwipeState = "idle" | "dragging" | "flying-left" | "flying-right";
+
+function getShuffleCallbackPercent(search: string) {
+  const candidate = Number(
+    new URLSearchParams(search).get("swipeCallbackAt") ??
+      DEFAULT_SHUFFLE_CALLBACK_PERCENT,
+  );
+
+  if (!VALID_SHUFFLE_CALLBACK_PERCENTS.has(candidate)) {
+    return DEFAULT_SHUFFLE_CALLBACK_PERCENT;
+  }
+
+  return candidate;
+}
+
+function getAnimationDurationMs(element: HTMLElement) {
+  const animationDuration = getComputedStyle(element)
+    .animationDuration.split(",")[0]
+    ?.trim();
+
+  if (!animationDuration) {
+    return 0;
+  }
+
+  if (animationDuration.endsWith("ms")) {
+    return Number.parseFloat(animationDuration);
+  }
+
+  if (animationDuration.endsWith("s")) {
+    return Number.parseFloat(animationDuration) * 1000;
+  }
+
+  return 0;
+}
 
 export function useSwipeToShuffle(
   cardRef: RefObject<HTMLElement | null>,
   onShuffleComplete: () => void,
 ) {
   const location = useLocation();
+  const shuffleCallbackPercent = getShuffleCallbackPercent(location.search);
   const dragOffsetXRef = useRef(0);
+  const didTriggerShuffleRef = useRef(false);
+  const shuffleCallbackTimeoutRef = useRef<number | null>(null);
   const swipeStateRef = useRef<SwipeState>("idle");
   const touchStartXRef = useRef<number | null>(null);
+
+  const clearScheduledShuffleCallback = useCallback(() => {
+    if (shuffleCallbackTimeoutRef.current !== null) {
+      window.clearTimeout(shuffleCallbackTimeoutRef.current);
+      shuffleCallbackTimeoutRef.current = null;
+    }
+  }, []);
 
   const setSwipeState = useCallback((nextState: SwipeState) => {
     swipeStateRef.current = nextState;
@@ -30,6 +75,8 @@ export function useSwipeToShuffle(
   }, []);
 
   const resetCard = useCallback(() => {
+    clearScheduledShuffleCallback();
+    didTriggerShuffleRef.current = false;
     touchStartXRef.current = null;
     dragOffsetXRef.current = 0;
     setSwipeState("idle");
@@ -40,7 +87,7 @@ export function useSwipeToShuffle(
       cardRef.current.style.removeProperty("--swipe-x");
       cardRef.current.style.removeProperty("--swipe-rotate");
     }
-  }, [cardRef, setSwipeState]);
+  }, [cardRef, clearScheduledShuffleCallback, setSwipeState]);
 
   useEffect(() => {
     resetCard();
@@ -52,6 +99,16 @@ export function useSwipeToShuffle(
     if (!card) {
       return;
     }
+
+    const triggerShuffleComplete = () => {
+      if (didTriggerShuffleRef.current) {
+        return;
+      }
+
+      didTriggerShuffleRef.current = true;
+      clearScheduledShuffleCallback();
+      onShuffleComplete();
+    };
 
     const onTouchStart = (event: TouchEvent) => {
       if (
@@ -106,8 +163,13 @@ export function useSwipeToShuffle(
         card.style.setProperty("--swipe-rotate", `${currentOffset * 0.04}deg`);
         card.style.transform = "";
         card.style.transition = "";
+        didTriggerShuffleRef.current = false;
         setSwipeState(direction);
-        onShuffleComplete();
+        clearScheduledShuffleCallback();
+        shuffleCallbackTimeoutRef.current = window.setTimeout(
+          triggerShuffleComplete,
+          getAnimationDurationMs(card) * (shuffleCallbackPercent / 100),
+        );
       } else {
         card.style.transition =
           "transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)";
@@ -123,14 +185,31 @@ export function useSwipeToShuffle(
       }
     };
 
+    const onAnimationEnd = () => {
+      if (
+        swipeStateRef.current === "flying-left" ||
+        swipeStateRef.current === "flying-right"
+      ) {
+        triggerShuffleComplete();
+      }
+    };
+
     card.addEventListener("touchstart", onTouchStart);
     card.addEventListener("touchmove", onTouchMove);
     card.addEventListener("touchend", onTouchEnd);
+    card.addEventListener("animationend", onAnimationEnd);
 
     return () => {
+      clearScheduledShuffleCallback();
       card.removeEventListener("touchstart", onTouchStart);
       card.removeEventListener("touchmove", onTouchMove);
       card.removeEventListener("touchend", onTouchEnd);
+      card.removeEventListener("animationend", onAnimationEnd);
     };
-  }, [onShuffleComplete, resetCard, setSwipeState]);
+  }, [
+    clearScheduledShuffleCallback,
+    onShuffleComplete,
+    setSwipeState,
+    shuffleCallbackPercent,
+  ]);
 }
