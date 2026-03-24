@@ -1,23 +1,27 @@
-import type { StrategyCard, StrategyList } from "../data/obliqueStrategies";
+import {
+  obliqueStrategies,
+  type StrategyCard,
+} from "../data/obliqueStrategies";
 
-export function getRandomStrategy(
-  strategies: StrategyList,
-  current?: StrategyCard,
-): StrategyCard {
+export function getRandomStrategy(current?: StrategyCard): StrategyCard {
   if (!current) {
-    return strategies[Math.floor(Math.random() * strategies.length)];
+    return obliqueStrategies[
+      Math.floor(Math.random() * obliqueStrategies.length)
+    ];
   }
 
-  const currentStrategyIndex = strategies.findIndex(
+  const currentStrategyIndex = obliqueStrategies.findIndex(
     (strategy) => strategy.slug === current.slug,
   );
 
   if (currentStrategyIndex === -1) {
-    return strategies[Math.floor(Math.random() * strategies.length)];
+    return obliqueStrategies[
+      Math.floor(Math.random() * obliqueStrategies.length)
+    ];
   }
 
   const randomIndexExcludingCurrent = Math.floor(
-    Math.random() * (strategies.length - 1),
+    Math.random() * (obliqueStrategies.length - 1),
   );
 
   const randomIndex =
@@ -25,5 +29,5 @@ export function getRandomStrategy(
       ? randomIndexExcludingCurrent + 1
       : randomIndexExcludingCurrent;
 
-  return strategies[randomIndex];
+  return obliqueStrategies[randomIndex];
 }

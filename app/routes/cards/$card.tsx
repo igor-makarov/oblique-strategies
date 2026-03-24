@@ -48,7 +48,7 @@ export default function CardPage({ loaderData }: Route.ComponentProps) {
   const accentStyle = { color: theme.accent };
   const cardRef = useRef<HTMLElement | null>(null);
   const handleShuffle = useCallback(() => {
-    const randomStrategy = getRandomStrategy(obliqueStrategies, strategy);
+    const randomStrategy = getRandomStrategy(strategy);
     navigate(cardRoute(randomStrategy.slug));
   }, [navigate, strategy]);
   useSwipeToShuffle(cardRef, handleShuffle);

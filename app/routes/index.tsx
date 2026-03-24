@@ -1,7 +1,6 @@
 import { Navigate } from "react-router";
 
 import CardLayout from "@/components/common/CardLayout";
-import { obliqueStrategies } from "@/js/data/obliqueStrategies";
 import { cardRoute } from "@/js/utils/collectStrategyRoutes";
 import { getRandomStrategy } from "@/js/utils/getRandomStrategy";
 
@@ -21,7 +20,7 @@ export function meta() {
 }
 
 export async function clientLoader() {
-  const strategy = getRandomStrategy(obliqueStrategies);
+  const strategy = getRandomStrategy();
   return { to: cardRoute(strategy.slug) };
 }
 
