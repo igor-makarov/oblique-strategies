@@ -58,8 +58,6 @@ p {
   position: relative;
 }
 
-
-
 /* ── Method 1: Flexbox ── */
 .page-shell-m1 {
   display: flex;
@@ -160,7 +158,6 @@ p {
   text-align: center;
 }
 
-
 @keyframes spin {
   to {
     transform: rotate(360deg);
@@ -216,7 +213,6 @@ p {
   margin-top: 2.5rem;
 }
 
-
 .browse-layout {
   margin: 0 auto;
   width: min(1200px, 100%);
@@ -243,7 +239,6 @@ p {
   display: inline-block;
   margin-left: 0.5rem;
 }
-
 
 @media screen and (max-width: 900px) {
   .strategy-grid {

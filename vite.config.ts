@@ -1,5 +1,5 @@
 import { reactRouter } from "@react-router/dev/vite";
-import { defineConfig, loadEnv, type Plugin } from "vite";
+import { type Plugin, defineConfig, loadEnv } from "vite";
 import devtoolsJson from "vite-plugin-devtools-json";
 import tsconfigPaths from "vite-tsconfig-paths";
 
@@ -34,11 +34,5 @@ export default defineConfig({
   build: {
     assetsDir: (process.env.BASE_URL || "/").substring(1) + "assets/",
   },
-  plugins: [
-    lanServer(),
-    additionalHotReloadFiles(),
-    devtoolsJson(),
-    tsconfigPaths(),
-    reactRouter(),
-  ],
+  plugins: [lanServer(), additionalHotReloadFiles(), devtoolsJson(), tsconfigPaths(), reactRouter()],
 });

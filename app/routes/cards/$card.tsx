@@ -1,17 +1,15 @@
+import type { SitemapHandle } from "@forge42/seo-tools/remix/sitemap";
+
 import { useCallback, useRef } from "react";
 import { useNavigate } from "react-router";
 
 import CardLayout from "@/components/common/CardLayout";
 import PageActions from "@/components/common/PageActions";
 import { useSwipeToShuffle } from "@/components/common/useSwipeToShuffle";
-import {
-  getStrategyBySlug,
-  obliqueStrategies,
-} from "@/js/data/obliqueStrategies";
+import { getStrategyBySlug, obliqueStrategies } from "@/js/data/obliqueStrategies";
 import { cardRoute } from "@/js/utils/collectStrategyRoutes";
 import { getRandomStrategy } from "@/js/utils/getRandomStrategy";
 import { getStrategyTheme } from "@/js/utils/getStrategyTheme";
-import type { SitemapHandle } from "@forge42/seo-tools/remix/sitemap";
 
 import type { Route } from "./+types/$card";
 

@@ -13,8 +13,7 @@ export function meta() {
     { title: pageTitle },
     {
       name: "description",
-      content:
-        "A static React Router edition of Oblique Strategies with a pre-generated page for every card.",
+      content: "A static React Router edition of Oblique Strategies with a pre-generated page for every card.",
     },
   ];
 }

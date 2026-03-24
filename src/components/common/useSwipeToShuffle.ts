@@ -1,4 +1,4 @@
-import { useCallback, useEffect, type RefObject, useRef } from "react";
+import { type RefObject, useCallback, useEffect, useRef } from "react";
 import { useLocation } from "react-router";
 
 const SWIPE_THRESHOLD = 80;
@@ -7,9 +7,7 @@ const SHUFFLE_CALLBACK_PERCENT = 70;
 type SwipeState = "idle" | "dragging" | "flying-left" | "flying-right";
 
 function getAnimationDurationMs(element: HTMLElement) {
-  const animationDuration = getComputedStyle(element)
-    .animationDuration.split(",")[0]
-    ?.trim();
+  const animationDuration = getComputedStyle(element).animationDuration.split(",")[0]?.trim();
 
   if (!animationDuration) {
     return 0;
@@ -26,10 +24,7 @@ function getAnimationDurationMs(element: HTMLElement) {
   return 0;
 }
 
-export function useSwipeToShuffle(
-  cardRef: RefObject<HTMLElement | null>,
-  onShuffleComplete: () => void,
-) {
+export function useSwipeToShuffle(cardRef: RefObject<HTMLElement | null>, onShuffleComplete: () => void) {
   const location = useLocation();
   const dragOffsetXRef = useRef(0);
   const didTriggerShuffleRef = useRef(false);
@@ -48,14 +43,8 @@ export function useSwipeToShuffle(
     swipeStateRef.current = nextState;
 
     if (cardRef.current) {
-      cardRef.current.classList.toggle(
-        "card-fly-left",
-        nextState === "flying-left",
-      );
-      cardRef.current.classList.toggle(
-        "card-fly-right",
-        nextState === "flying-right",
-      );
+      cardRef.current.classList.toggle("card-fly-left", nextState === "flying-left");
+      cardRef.current.classList.toggle("card-fly-right", nextState === "flying-right");
     }
   }, []);
 
@@ -96,10 +85,7 @@ export function useSwipeToShuffle(
     };
 
     const onTouchStart = (event: TouchEvent) => {
-      if (
-        swipeStateRef.current === "flying-left" ||
-        swipeStateRef.current === "flying-right"
-      ) {
+      if (swipeStateRef.current === "flying-left" || swipeStateRef.current === "flying-right") {
         return;
       }
 
@@ -114,10 +100,7 @@ export function useSwipeToShuffle(
 
     const onTouchMove = (event: TouchEvent) => {
       if (touchStartXRef.current === null) return;
-      if (
-        swipeStateRef.current === "flying-left" ||
-        swipeStateRef.current === "flying-right"
-      ) {
+      if (swipeStateRef.current === "flying-left" || swipeStateRef.current === "flying-right") {
         return;
       }
 
@@ -156,8 +139,7 @@ export function useSwipeToShuffle(
           getAnimationDurationMs(card) * (SHUFFLE_CALLBACK_PERCENT / 100),
         );
       } else {
-        card.style.transition =
-          "transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)";
+        card.style.transition = "transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)";
         card.style.transform = "";
         card.addEventListener(
           "transitionend",
@@ -171,10 +153,7 @@ export function useSwipeToShuffle(
     };
 
     const onAnimationEnd = () => {
-      if (
-        swipeStateRef.current === "flying-left" ||
-        swipeStateRef.current === "flying-right"
-      ) {
+      if (swipeStateRef.current === "flying-left" || swipeStateRef.current === "flying-right") {
         triggerShuffleComplete();
       }
     };
