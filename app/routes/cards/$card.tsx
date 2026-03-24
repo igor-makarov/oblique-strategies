@@ -10,6 +10,7 @@ import {
 } from "@/js/data/obliqueStrategies";
 import { cardRoute } from "@/js/utils/collectStrategyRoutes";
 import { getStrategyTheme } from "@/js/utils/getStrategyTheme";
+import { getRandomStrategyIndex } from "@/js/utils/getRandomStrategyIndex";
 import type { SitemapHandle } from "@forge42/seo-tools/remix/sitemap";
 
 import type { Route } from "./+types/$card";
@@ -51,18 +52,10 @@ export default function CardPage({ loaderData }: Route.ComponentProps) {
     [strategy.slug],
   );
   const handleShuffle = useCallback(() => {
-    if (obliqueStrategies.length <= 1 || currentStrategyIndex === -1) {
-      return;
-    }
-
-    const randomIndexExcludingCurrent = Math.floor(
-      Math.random() * (obliqueStrategies.length - 1),
+    const randomIndex = getRandomStrategyIndex(
+      obliqueStrategies,
+      currentStrategyIndex,
     );
-    const randomIndex =
-      randomIndexExcludingCurrent >= currentStrategyIndex
-        ? randomIndexExcludingCurrent + 1
-        : randomIndexExcludingCurrent;
-
     navigate(cardRoute(obliqueStrategies[randomIndex].slug));
   }, [currentStrategyIndex, navigate]);
   useSwipeToShuffle(cardRef, handleShuffle);
