@@ -1,7 +1,7 @@
-import type { StrategyCard } from "../data/obliqueStrategies";
+import type { StrategyCard, StrategyList } from "../data/obliqueStrategies";
 
 export function getRandomStrategy(
-  strategies: readonly StrategyCard[],
+  strategies: StrategyList,
   current?: StrategyCard,
 ): StrategyCard {
   if (!current) {
