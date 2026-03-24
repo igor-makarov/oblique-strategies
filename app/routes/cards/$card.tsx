@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useRef } from "react";
-import { useLocation, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 
 import CardLayout from "@/components/common/CardLayout";
 import PageActions from "@/components/common/PageActions";
@@ -41,7 +41,6 @@ export async function loader({ params }: Route.LoaderArgs) {
 }
 
 export default function CardPage({ loaderData }: Route.ComponentProps) {
-  const location = useLocation();
   const navigate = useNavigate();
   const { strategy } = loaderData;
   const theme = getStrategyTheme(strategy);
@@ -64,9 +63,8 @@ export default function CardPage({ loaderData }: Route.ComponentProps) {
         ? randomIndexExcludingCurrent + 1
         : randomIndexExcludingCurrent;
 
-    const nextRoute = cardRoute(obliqueStrategies[randomIndex].slug);
-    navigate(location.search ? `${nextRoute}${location.search}` : nextRoute);
-  }, [currentStrategyIndex, location.search, navigate]);
+    navigate(cardRoute(obliqueStrategies[randomIndex].slug));
+  }, [currentStrategyIndex, navigate]);
   useSwipeToShuffle(cardRef, handleShuffle);
 
   return (

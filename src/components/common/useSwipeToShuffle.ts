@@ -2,23 +2,9 @@ import { useCallback, useEffect, type RefObject, useRef } from "react";
 import { useLocation } from "react-router";
 
 const SWIPE_THRESHOLD = 80;
-const DEFAULT_SHUFFLE_CALLBACK_PERCENT = 80;
-const VALID_SHUFFLE_CALLBACK_PERCENTS = new Set([40, 50, 60, 70, 80, 90]);
+const SHUFFLE_CALLBACK_PERCENT = 70;
 
 type SwipeState = "idle" | "dragging" | "flying-left" | "flying-right";
-
-function getShuffleCallbackPercent(search: string) {
-  const candidate = Number(
-    new URLSearchParams(search).get("swipeCallbackAt") ??
-      DEFAULT_SHUFFLE_CALLBACK_PERCENT,
-  );
-
-  if (!VALID_SHUFFLE_CALLBACK_PERCENTS.has(candidate)) {
-    return DEFAULT_SHUFFLE_CALLBACK_PERCENT;
-  }
-
-  return candidate;
-}
 
 function getAnimationDurationMs(element: HTMLElement) {
   const animationDuration = getComputedStyle(element)
@@ -45,7 +31,6 @@ export function useSwipeToShuffle(
   onShuffleComplete: () => void,
 ) {
   const location = useLocation();
-  const shuffleCallbackPercent = getShuffleCallbackPercent(location.search);
   const dragOffsetXRef = useRef(0);
   const didTriggerShuffleRef = useRef(false);
   const shuffleCallbackTimeoutRef = useRef<number | null>(null);
@@ -168,7 +153,7 @@ export function useSwipeToShuffle(
         clearScheduledShuffleCallback();
         shuffleCallbackTimeoutRef.current = window.setTimeout(
           triggerShuffleComplete,
-          getAnimationDurationMs(card) * (shuffleCallbackPercent / 100),
+          getAnimationDurationMs(card) * (SHUFFLE_CALLBACK_PERCENT / 100),
         );
       } else {
         card.style.transition =
@@ -206,10 +191,5 @@ export function useSwipeToShuffle(
       card.removeEventListener("touchend", onTouchEnd);
       card.removeEventListener("animationend", onAnimationEnd);
     };
-  }, [
-    clearScheduledShuffleCallback,
-    onShuffleComplete,
-    setSwipeState,
-    shuffleCallbackPercent,
-  ]);
+  }, [clearScheduledShuffleCallback, onShuffleComplete, setSwipeState]);
 }
