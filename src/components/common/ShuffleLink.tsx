@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router";
 
 import { obliqueStrategies } from "@/js/data/obliqueStrategies";
 import { cardRoute } from "@/js/utils/collectStrategyRoutes";
-import { getRandomStrategyIndex } from "@/js/utils/getRandomStrategyIndex";
+import { getRandomStrategy } from "@/js/utils/getRandomStrategy";
 
 export default function ShuffleLink({
   children,
@@ -15,8 +15,8 @@ export default function ShuffleLink({
     if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0)
       return;
     e.preventDefault();
-    const randomIndex = getRandomStrategyIndex(obliqueStrategies);
-    navigate(cardRoute(obliqueStrategies[randomIndex].slug));
+    const strategy = getRandomStrategy(obliqueStrategies);
+    navigate(cardRoute(strategy.slug));
   }
 
   return (

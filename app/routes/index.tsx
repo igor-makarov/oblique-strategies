@@ -3,7 +3,7 @@ import { Navigate } from "react-router";
 import CardLayout from "@/components/common/CardLayout";
 import { obliqueStrategies } from "@/js/data/obliqueStrategies";
 import { cardRoute } from "@/js/utils/collectStrategyRoutes";
-import { getRandomStrategyIndex } from "@/js/utils/getRandomStrategyIndex";
+import { getRandomStrategy } from "@/js/utils/getRandomStrategy";
 
 import type { Route } from "./+types/index";
 
@@ -21,8 +21,8 @@ export function meta() {
 }
 
 export async function clientLoader() {
-  const randomIndex = getRandomStrategyIndex(obliqueStrategies);
-  return { to: cardRoute(obliqueStrategies[randomIndex].slug) };
+  const strategy = getRandomStrategy(obliqueStrategies);
+  return { to: cardRoute(strategy.slug) };
 }
 
 export function HydrateFallback() {
