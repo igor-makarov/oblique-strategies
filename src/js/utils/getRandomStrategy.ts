@@ -3,11 +3,15 @@ import {
   type StrategyCard,
 } from "../data/obliqueStrategies";
 
+function getAnyRandomStrategy(): StrategyCard {
+  return obliqueStrategies[
+    Math.floor(Math.random() * obliqueStrategies.length)
+  ];
+}
+
 export function getRandomStrategy(current?: StrategyCard): StrategyCard {
   if (!current) {
-    return obliqueStrategies[
-      Math.floor(Math.random() * obliqueStrategies.length)
-    ];
+    return getAnyRandomStrategy();
   }
 
   const currentStrategyIndex = obliqueStrategies.findIndex(
@@ -15,9 +19,7 @@ export function getRandomStrategy(current?: StrategyCard): StrategyCard {
   );
 
   if (currentStrategyIndex === -1) {
-    return obliqueStrategies[
-      Math.floor(Math.random() * obliqueStrategies.length)
-    ];
+    return getAnyRandomStrategy();
   }
 
   const randomIndexExcludingCurrent = Math.floor(
