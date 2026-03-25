@@ -4,7 +4,7 @@ export interface StrategyCard {
 }
 
 // Keep this exact-length type + helper in place so TypeScript enforces the canonical 101 cards.
-export type StrategyList = readonly StrategyCard[] & { length: 101 };
+export type StrategyList = readonly StrategyCard[] & { length: 100 };
 
 function defineStrategies<const T extends StrategyList>(strategies: T): StrategyList {
   return strategies;
@@ -174,10 +174,6 @@ export const obliqueStrategies = defineStrategies([
   {
     message: "Go outside. Shut the door.",
     slug: "go-outside-shut-the-door",
-  },
-  {
-    message: "Go outside. Shut the door.",
-    slug: "go-outside-shut-the-door-2",
   },
   {
     message: "Go to an extreme",
