@@ -1,23 +1,22 @@
-import type { SitemapHandle } from "@forge42/seo-tools/remix/sitemap";
-
 import { useCallback, useRef } from "react";
 import { useNavigate } from "react-router";
 
 import CardLayout from "@/components/common/CardLayout";
 import PageActions from "@/components/common/PageActions";
 import { useSwipeToShuffle } from "@/components/common/useSwipeToShuffle";
-import { getStrategyBySlug, obliqueStrategies } from "@/js/data/obliqueStrategies";
-import { cardRoute } from "@/js/utils/collectStrategyRoutes";
+import { getStrategyBySlug } from "@/js/data/obliqueStrategies";
+import { cardRoute, collectCardRoutes } from "@/js/utils/collectStrategyRoutes";
 import { getRandomStrategy } from "@/js/utils/getRandomStrategy";
 import { getStrategyTheme } from "@/js/utils/getStrategyTheme";
 
 import type { Route } from "./+types/$card";
 
-export const handle: SitemapHandle<unknown> = {
-  sitemap: (domain) =>
-    obliqueStrategies.map((strategy) => ({
-      route: `${domain}/cards/${strategy.slug}`,
-    })),
+export const handle = {
+  // Required for sitemap.xml: this expands the dynamic /cards/:card route into concrete card URLs.
+  // Static prerendering uses collectCardRoutes() separately in react-router.config.ts.
+  sitemap(domain: string) {
+    return collectCardRoutes().map((route) => ({ route: `${domain}${route}` }));
+  },
 };
 
 export async function loader({ params }: Route.LoaderArgs) {
