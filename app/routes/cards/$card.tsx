@@ -9,6 +9,7 @@ import { cardRoute, collectCardRoutes, ogCardImageRoute } from "@/js/utils/colle
 import { getRandomStrategy } from "@/js/utils/getRandomStrategy";
 import { getStrategyTheme } from "@/js/utils/getStrategyTheme";
 import { ogImageSizeSlug, ogImageSizes, twitterOgImageSize } from "@/js/utils/ogImageSizes";
+import { getSiteOrigin } from "@/js/utils/siteUrl";
 
 import type { Route } from "./+types/$card";
 
@@ -20,7 +21,7 @@ export const handle = {
   },
 };
 
-export async function loader({ params }: Route.LoaderArgs) {
+export async function loader({ params, request }: Route.LoaderArgs) {
   const slug = params.card;
   const strategy = getStrategyBySlug(slug);
 
@@ -29,13 +30,14 @@ export async function loader({ params }: Route.LoaderArgs) {
   }
 
   const { background } = getStrategyTheme(strategy);
+  const siteOrigin = getSiteOrigin(request);
 
-  return { strategy, background };
+  return { strategy, background, siteOrigin };
 }
 
 export default function CardPage({ loaderData }: Route.ComponentProps) {
   const navigate = useNavigate();
-  const { strategy } = loaderData;
+  const { strategy, siteOrigin } = loaderData;
   const theme = getStrategyTheme(strategy);
   const accentStyle = { color: theme.accent };
   const cardRef = useRef<HTMLElement | null>(null);
@@ -50,9 +52,9 @@ export default function CardPage({ loaderData }: Route.ComponentProps) {
       <title>{`Oblique Strategies - ${strategy.message}`}</title>
       <meta property="og:title" content={strategy.message} />
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:image" content={ogCardImageRoute(strategy.slug, twitterOgImageSize)} />
+      <meta name="twitter:image" content={`${siteOrigin}${ogCardImageRoute(strategy.slug, twitterOgImageSize)}`} />
       {ogImageSizes.flatMap((size) => [
-        <meta key={`og:image:${ogImageSizeSlug(size)}`} property="og:image" content={ogCardImageRoute(strategy.slug, size)} />,
+        <meta key={`og:image:${ogImageSizeSlug(size)}`} property="og:image" content={`${siteOrigin}${ogCardImageRoute(strategy.slug, size)}`} />,
         <meta key={`og:image:width:${ogImageSizeSlug(size)}`} property="og:image:width" content={String(size[0])} />,
         <meta key={`og:image:height:${ogImageSizeSlug(size)}`} property="og:image:height" content={String(size[1])} />,
       ])}

@@ -1,6 +1,9 @@
-import { Links, Outlet, Scripts, ScrollRestoration, useMatches } from "react-router";
+import { Links, Outlet, Scripts, ScrollRestoration, useLocation, useMatches } from "react-router";
 
+import { canonicalPathname, getSiteOrigin } from "@/js/utils/siteUrl";
 import "@/styles/style.css";
+
+import type { Route } from "./+types/root";
 
 const pageDescription = "Oblique Strategies by Brian Eno and Peter Schmidt. Your magic 8-ball of inspiration.";
 const siteName = "Oblique Strategies";
@@ -16,8 +19,16 @@ function useBodyBackground(): string | undefined {
   }
 }
 
-export default function Root() {
+export async function loader({ request }: Route.LoaderArgs) {
+  return {
+    siteOrigin: getSiteOrigin(request),
+  };
+}
+
+export default function Root({ loaderData }: Route.ComponentProps) {
   const background = useBodyBackground();
+  const location = useLocation();
+  const canonicalUrl = `${loaderData.siteOrigin}${canonicalPathname(location.pathname)}`;
 
   return (
     <html lang="en">
@@ -25,9 +36,11 @@ export default function Root() {
         <meta charSet="UTF-8" />
         <meta name="description" content={pageDescription} />
         <meta property="og:site_name" content={siteName} />
+        <meta property="og:url" content={canonicalUrl} />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <link rel="canonical" href={canonicalUrl} />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png" />
         <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png" />
