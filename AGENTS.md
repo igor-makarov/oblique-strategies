@@ -4,5 +4,5 @@ Reference impl: https://github.com/nomatteus/oblique-strategies
 
 Basic rules:
 - Format: `npm run format`
-- Build: `npm run build`
+- Build: `npm run build` (noisy, use grep, head, tail)
 - See the rest in the `package.json`
