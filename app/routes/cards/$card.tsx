@@ -9,6 +9,7 @@ import { cardRoute, collectCardRoutes, ogCardImageRoute } from "@/js/utils/colle
 import { getRandomStrategy } from "@/js/utils/getRandomStrategy";
 import { getStrategyTheme } from "@/js/utils/getStrategyTheme";
 import { ogImageSizeSlug, ogImageSizes, twitterOgImageSize } from "@/js/utils/ogImageSizes";
+import { getSiteOrigin } from "@/js/utils/siteUrl";
 
 import type { Route } from "./+types/$card";
 
@@ -19,16 +20,6 @@ export const handle = {
     return collectCardRoutes().map((route) => ({ route: `${domain}${route}` }));
   },
 };
-
-function getSiteOrigin(request: Request): string {
-  const configuredOrigin = process.env.SITEMAP_BASE_URL;
-
-  if (configuredOrigin) {
-    return configuredOrigin.replace(/\/$/, "");
-  }
-
-  return new URL(request.url).origin;
-}
 
 export async function loader({ params, request }: Route.LoaderArgs) {
   const slug = params.card;
