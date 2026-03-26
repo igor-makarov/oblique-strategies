@@ -8,13 +8,10 @@ import { type OgImageSize, getOgImageSize } from "@/js/utils/ogImageSizes";
 
 import type { Route } from "./+types/$card[.]png";
 
-const fontDataPromise = Promise.all([
-  readFile("/System/Library/Fonts/Supplemental/Arial.ttf"),
-  readFile("/System/Library/Fonts/Supplemental/Arial Bold.ttf"),
-]);
+const fontDataPromise = readFile("node_modules/@fontsource/inter/files/inter-latin-700-normal.woff");
 
 async function renderPng(title: string, background: string, [width, height]: OgImageSize): Promise<Buffer> {
-  const [arialRegular, arialBold] = await fontDataPromise;
+  const interBold = await fontDataPromise;
   const cardWidthPx = width * 0.5833333333;
   const cardHeightPx = (cardWidthPx * 5) / 7;
   const titleFontSize = `${cardHeightPx * 0.144}px`;
@@ -40,6 +37,7 @@ async function renderPng(title: string, background: string, [width, height]: OgI
           boxShadow: "0 18px 60px rgba(23, 23, 23, 0.12)",
           color: "#171717",
           display: "flex",
+          fontFamily: "Inter",
           height: cardHeight,
           width: cardWidth,
         }}
@@ -74,14 +72,8 @@ async function renderPng(title: string, background: string, [width, height]: OgI
     {
       fonts: [
         {
-          data: arialRegular,
-          name: "Arial",
-          style: "normal",
-          weight: 400,
-        },
-        {
-          data: arialBold,
-          name: "Arial",
+          data: interBold,
+          name: "Inter",
           style: "normal",
           weight: 700,
         },
