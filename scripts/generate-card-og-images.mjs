@@ -6,6 +6,7 @@ import puppeteer from "puppeteer-core";
 
 const outputWidth = 1200;
 const outputHeight = 630;
+const cardRoutePrefix = "/cards";
 const clientBuildDir = fileURLToPath(new URL("../build/client", import.meta.url));
 const cardPagesDir = fileURLToPath(new URL("../build/client/cards", import.meta.url));
 const imageOutputDir = fileURLToPath(new URL("../build/client/og/cards", import.meta.url));
@@ -29,6 +30,8 @@ const browserCandidates = [
   "/usr/bin/google-chrome",
   "/usr/bin/chromium-browser",
   "/usr/bin/chromium",
+  "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+  "/Applications/Chromium.app/Contents/MacOS/Chromium",
   "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
   "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
 ].filter(Boolean);
@@ -121,7 +124,7 @@ async function main() {
   await mkdir(imageOutputDir, { recursive: true });
 
   const browser = await puppeteer.launch({
-    args: ["--disable-dev-shm-usage", "--headless=new", "--hide-scrollbars", ...(process.env.CI ? ["--no-sandbox"] : [])],
+    args: ["--disable-dev-shm-usage", "--hide-scrollbars", ...(process.env.CI ? ["--no-sandbox"] : [])],
     executablePath,
     headless: true,
   });
@@ -134,7 +137,7 @@ async function main() {
       const slug = entry.name;
       const outputFile = path.join(imageOutputDir, `${slug}.png`);
 
-      await page.goto(`${server.origin}/cards/${slug}`, { waitUntil: "networkidle0" });
+      await page.goto(`${server.origin}${cardRoutePrefix}/${slug}`, { waitUntil: "networkidle0" });
       await page.screenshot({ path: outputFile, type: "png" });
     }
   } finally {
