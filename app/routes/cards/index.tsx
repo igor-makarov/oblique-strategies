@@ -11,6 +11,7 @@ export default function CardsIndexPage() {
   return (
     <>
       <title>Oblique Strategies - All Cards</title>
+      <meta property="og:title" content="Oblique Strategies - All Cards" />
       <div className="page-shell page-shell-wide page-shell-neutral">
         <div className="browse-layout">
           <div className="browse-header">

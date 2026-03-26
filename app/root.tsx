@@ -3,6 +3,7 @@ import { Links, Outlet, Scripts, ScrollRestoration, useMatches } from "react-rou
 import "@/styles/style.css";
 
 const pageDescription = "Oblique Strategies by Brian Eno and Peter Schmidt. Your magic 8-ball of inspiration.";
+const siteName = "Oblique Strategies";
 
 function useBodyBackground(): string | undefined {
   const matches = useMatches();
@@ -23,6 +24,7 @@ export default function Root() {
       <head>
         <meta charSet="UTF-8" />
         <meta name="description" content={pageDescription} />
+        <meta property="og:site_name" content={siteName} />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />

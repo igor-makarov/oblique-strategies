@@ -17,6 +17,7 @@ export function HydrateFallback() {
   return (
     <>
       <title>{pageTitle}</title>
+      <meta property="og:title" content={pageTitle} />
       <CardLayout>
         <div className="shuffle-spinner" />
       </CardLayout>
@@ -28,6 +29,7 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
   return (
     <>
       <title>{pageTitle}</title>
+      <meta property="og:title" content={pageTitle} />
       <Navigate to={loaderData.to} replace />
     </>
   );

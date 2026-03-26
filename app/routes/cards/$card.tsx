@@ -48,6 +48,7 @@ export default function CardPage({ loaderData }: Route.ComponentProps) {
   return (
     <>
       <title>{`Oblique Strategies - ${strategy.message}`}</title>
+      <meta property="og:title" content={`Oblique Strategies - ${strategy.message}`} />
       <CardLayout cardRef={cardRef}>
         <div className="strategy-kicker" style={accentStyle}>
           Oblique Strategies
