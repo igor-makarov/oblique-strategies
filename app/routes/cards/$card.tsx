@@ -20,17 +20,6 @@ export const handle: SitemapHandle<unknown> = {
     })),
 };
 
-export function meta({ data }: Route.MetaArgs) {
-  const title = data?.strategy?.message ? `Oblique Strategies - ${data.strategy.message}` : "Oblique Strategies";
-  return [
-    { title },
-    {
-      name: "description",
-      content: "Oblique Strategies by Brian Eno and Peter Schmidt. Your magic 8-ball of inspiration.",
-    },
-  ];
-}
-
 export async function loader({ params }: Route.LoaderArgs) {
   const slug = params.card;
   const strategy = getStrategyBySlug(slug);
@@ -58,6 +47,7 @@ export default function CardPage({ loaderData }: Route.ComponentProps) {
 
   return (
     <>
+      <title>{`Oblique Strategies - ${strategy.message}`}</title>
       <CardLayout cardRef={cardRef}>
         <div className="strategy-kicker" style={accentStyle}>
           Oblique Strategies

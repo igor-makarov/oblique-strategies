@@ -8,16 +8,6 @@ import type { Route } from "./+types/index";
 
 const pageTitle = "Oblique Strategies";
 
-export function meta() {
-  return [
-    { title: pageTitle },
-    {
-      name: "description",
-      content: "Oblique Strategies by Brian Eno and Peter Schmidt. Your magic 8-ball of inspiration.",
-    },
-  ];
-}
-
 export async function clientLoader() {
   const strategy = getRandomStrategy();
   return { to: cardRoute(strategy.slug) };
@@ -25,12 +15,20 @@ export async function clientLoader() {
 
 export function HydrateFallback() {
   return (
-    <CardLayout>
-      <div className="shuffle-spinner" />
-    </CardLayout>
+    <>
+      <title>{pageTitle}</title>
+      <CardLayout>
+        <div className="shuffle-spinner" />
+      </CardLayout>
+    </>
   );
 }
 
 export default function HomePage({ loaderData }: Route.ComponentProps) {
-  return <Navigate to={loaderData.to} replace />;
+  return (
+    <>
+      <title>{pageTitle}</title>
+      <Navigate to={loaderData.to} replace />
+    </>
+  );
 }

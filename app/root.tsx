@@ -1,6 +1,8 @@
-import { Links, Meta, Outlet, Scripts, ScrollRestoration, useMatches } from "react-router";
+import { Links, Outlet, Scripts, ScrollRestoration, useMatches } from "react-router";
 
 import "@/styles/style.css";
+
+const pageDescription = "Oblique Strategies by Brian Eno and Peter Schmidt. Your magic 8-ball of inspiration.";
 
 function useBodyBackground(): string | undefined {
   const matches = useMatches();
@@ -20,6 +22,7 @@ export default function Root() {
     <html lang="en">
       <head>
         <meta charSet="UTF-8" />
+        <meta name="description" content={pageDescription} />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -30,7 +33,6 @@ export default function Root() {
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         <link rel="manifest" href="/manifest.webmanifest" />
-        <Meta />
         <Links />
       </head>
       <body style={background ? { background } : undefined}>
