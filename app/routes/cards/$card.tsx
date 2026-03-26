@@ -13,8 +13,6 @@ import { getStrategyTheme } from "@/js/utils/getStrategyTheme";
 
 import type { Route } from "./+types/$card";
 
-const pageTitle = "Oblique Strategies";
-
 export const handle: SitemapHandle<unknown> = {
   sitemap: (domain) =>
     obliqueStrategies.map((strategy) => ({
@@ -22,8 +20,15 @@ export const handle: SitemapHandle<unknown> = {
     })),
 };
 
-export function meta() {
-  return [{ title: pageTitle }];
+export function meta({ data }: Route.MetaArgs) {
+  const title = data?.strategy?.message ? `Oblique Strategies - ${data.strategy.message}` : "Oblique Strategies";
+  return [
+    { title },
+    {
+      name: "description",
+      content: "Oblique Strategies by Brian Eno and Peter Schmidt. Your magic 8-ball of inspiration.",
+    },
+  ];
 }
 
 export async function loader({ params }: Route.LoaderArgs) {

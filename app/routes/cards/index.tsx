@@ -8,7 +8,13 @@ import { getStrategyTheme } from "@/js/utils/getStrategyTheme";
 const pageTitle = "All Cards";
 
 export function meta() {
-  return [{ title: pageTitle }];
+  return [
+    { title: "Oblique Strategies - All Cards" },
+    {
+      name: "description",
+      content: "Oblique Strategies by Brian Eno and Peter Schmidt. Your magic 8-ball of inspiration.",
+    },
+  ];
 }
 
 export default function CardsIndexPage() {
