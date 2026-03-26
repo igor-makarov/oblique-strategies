@@ -8,16 +8,6 @@ import type { Route } from "./+types/index";
 
 const pageTitle = "Oblique Strategies";
 
-export function meta() {
-  return [
-    { title: pageTitle },
-    {
-      name: "description",
-      content: "A static React Router edition of Oblique Strategies with a pre-generated page for every card.",
-    },
-  ];
-}
-
 export async function clientLoader() {
   const strategy = getRandomStrategy();
   return { to: cardRoute(strategy.slug) };
@@ -25,12 +15,22 @@ export async function clientLoader() {
 
 export function HydrateFallback() {
   return (
-    <CardLayout>
-      <div className="shuffle-spinner" />
-    </CardLayout>
+    <>
+      <title>{pageTitle}</title>
+      <meta property="og:title" content={pageTitle} />
+      <CardLayout>
+        <div className="shuffle-spinner" />
+      </CardLayout>
+    </>
   );
 }
 
 export default function HomePage({ loaderData }: Route.ComponentProps) {
-  return <Navigate to={loaderData.to} replace />;
+  return (
+    <>
+      <title>{pageTitle}</title>
+      <meta property="og:title" content={pageTitle} />
+      <Navigate to={loaderData.to} replace />
+    </>
+  );
 }

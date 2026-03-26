@@ -13,18 +13,12 @@ import { getStrategyTheme } from "@/js/utils/getStrategyTheme";
 
 import type { Route } from "./+types/$card";
 
-const pageTitle = "Oblique Strategies";
-
 export const handle: SitemapHandle<unknown> = {
   sitemap: (domain) =>
     obliqueStrategies.map((strategy) => ({
       route: `${domain}/cards/${strategy.slug}`,
     })),
 };
-
-export function meta() {
-  return [{ title: pageTitle }];
-}
 
 export async function loader({ params }: Route.LoaderArgs) {
   const slug = params.card;
@@ -53,6 +47,8 @@ export default function CardPage({ loaderData }: Route.ComponentProps) {
 
   return (
     <>
+      <title>{`Oblique Strategies - ${strategy.message}`}</title>
+      <meta property="og:title" content={strategy.message} />
       <CardLayout cardRef={cardRef}>
         <div className="strategy-kicker" style={accentStyle}>
           Oblique Strategies
