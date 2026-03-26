@@ -1,145 +1,146 @@
-import { mkdir, readFile, readdir, rm } from "node:fs/promises";
+import { access, mkdir, readFile, readdir, rm, stat } from "node:fs/promises";
+import { createServer } from "node:http";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import sharp from "sharp";
+import puppeteer from "puppeteer-core";
 
 const outputWidth = 1200;
 const outputHeight = 630;
-const cardWidth = 700;
-const cardHeight = 500;
+const clientBuildDir = fileURLToPath(new URL("../build/client", import.meta.url));
 const cardPagesDir = fileURLToPath(new URL("../build/client/cards", import.meta.url));
 const imageOutputDir = fileURLToPath(new URL("../build/client/og/cards", import.meta.url));
 
-const namedHtmlEntities = {
-  amp: "&",
-  apos: "'",
-  gt: ">",
-  lt: "<",
-  quot: '"',
+const mimeTypes = {
+  ".css": "text/css; charset=utf-8",
+  ".data": "application/json; charset=utf-8",
+  ".html": "text/html; charset=utf-8",
+  ".js": "text/javascript; charset=utf-8",
+  ".json": "application/json; charset=utf-8",
+  ".png": "image/png",
+  ".svg": "image/svg+xml",
+  ".txt": "text/plain; charset=utf-8",
+  ".webmanifest": "application/manifest+json; charset=utf-8",
+  ".xml": "application/xml; charset=utf-8",
 };
 
-function decodeHtmlEntities(value) {
-  return value.replace(/&(#x[0-9A-Fa-f]+|#\d+|amp|apos|gt|lt|quot);/gi, (entity, token) => {
-    if (token[0] === "#") {
-      const isHex = token[1]?.toLowerCase() === "x";
-      const codePoint = Number.parseInt(token.slice(isHex ? 2 : 1), isHex ? 16 : 10);
+const browserCandidates = [
+  process.env.PUPPETEER_EXECUTABLE_PATH,
+  "/usr/bin/google-chrome-stable",
+  "/usr/bin/google-chrome",
+  "/usr/bin/chromium-browser",
+  "/usr/bin/chromium",
+  "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+  "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
+].filter(Boolean);
 
-      return Number.isNaN(codePoint) ? entity : String.fromCodePoint(codePoint);
+function contentTypeFor(filePath) {
+  return mimeTypes[path.extname(filePath)] ?? "application/octet-stream";
+}
+
+async function resolveRequestPath(urlPathname) {
+  const pathname = decodeURIComponent(urlPathname);
+  const requestedPath = pathname === "/" ? "/index.html" : pathname;
+  const candidate = path.resolve(clientBuildDir, `.${requestedPath}`);
+
+  if (!candidate.startsWith(clientBuildDir)) {
+    throw new Error("Invalid path");
+  }
+
+  const candidateStat = await stat(candidate).catch(() => null);
+  if (candidateStat?.isDirectory()) {
+    return path.join(candidate, "index.html");
+  }
+
+  if (candidateStat?.isFile()) {
+    return candidate;
+  }
+
+  if (!path.extname(candidate)) {
+    return path.join(candidate, "index.html");
+  }
+
+  return candidate;
+}
+
+async function startStaticServer() {
+  const server = createServer(async (request, response) => {
+    try {
+      const requestUrl = new URL(request.url ?? "/", "http://127.0.0.1");
+      const filePath = await resolveRequestPath(requestUrl.pathname);
+      const fileBuffer = await readFile(filePath);
+
+      response.writeHead(200, { "Content-Type": contentTypeFor(filePath) });
+      response.end(fileBuffer);
+    } catch (error) {
+      response.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
+      response.end("Not Found");
     }
-
-    return namedHtmlEntities[token.toLowerCase()] ?? entity;
   });
-}
 
-function escapeHtml(value) {
-  return value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#39;");
-}
+  await new Promise((resolve, reject) => {
+    server.once("error", reject);
+    server.listen(0, "127.0.0.1", resolve);
+  });
 
-function readCardPageData(pageHtml) {
-  // Read the specific prerendered card markup emitted by the static build so og images stay aligned with the page content.
-  const background = pageHtml.match(/<body[^>]*style="background:([^"]+)"/)?.[1];
-  const accent = pageHtml.match(/<div[^>]*class="strategy-kicker"[^>]*style="color:([^"]+)"[^>]*>/)?.[1];
-  const message = pageHtml.match(/<h1[^>]*class="strategy-message"[^>]*>\s*<span[^>]*white-space:pre-line[^>]*>([\s\S]*?)<\/span>\s*<\/h1>/)?.[1];
-
-  if (!background || !accent || !message) {
-    throw new Error("Unable to read prerendered card data from HTML");
+  const address = server.address();
+  if (!address || typeof address === "string") {
+    throw new Error("Unable to determine preview server address");
   }
 
   return {
-    accent,
-    background,
-    message: decodeHtmlEntities(message),
+    close() {
+      return new Promise((resolve, reject) => {
+        server.close((error) => {
+          if (error) reject(error);
+          else resolve();
+        });
+      });
+    },
+    origin: `http://127.0.0.1:${address.port}`,
   };
 }
 
-function getMessageFontSize(message) {
-  const longestLine = Math.max(...message.split("\n").map((line) => line.trim().length));
+async function findBrowserExecutable() {
+  for (const candidate of browserCandidates) {
+    try {
+      await access(candidate);
+      return candidate;
+    } catch {}
+  }
 
-  if (longestLine > 45) return 44;
-  if (longestLine > 34) return 52;
-  if (longestLine > 24) return 60;
-  if (longestLine > 16) return 68;
-
-  return 76;
-}
-
-function renderCardSvg({ accent, background, message }) {
-  const messageFontSize = getMessageFontSize(message);
-  const escapedMessage = escapeHtml(message);
-
-  return `
-    <svg width="${outputWidth}" height="${outputHeight}" viewBox="0 0 ${outputWidth} ${outputHeight}" xmlns="http://www.w3.org/2000/svg">
-      <rect width="${outputWidth}" height="${outputHeight}" fill="${background}" />
-      <foreignObject x="${(outputWidth - cardWidth) / 2}" y="${(outputHeight - cardHeight) / 2}" width="${cardWidth}" height="${cardHeight}">
-        <div
-          xmlns="http://www.w3.org/1999/xhtml"
-          style="
-            width:${cardWidth}px;
-            height:${cardHeight}px;
-            box-sizing:border-box;
-            background:rgba(255,255,255,0.92);
-            border:1px solid rgba(23,23,23,0.12);
-            border-radius:24px;
-            box-shadow:0 18px 60px rgba(23,23,23,0.12);
-            display:flex;
-            flex-direction:column;
-            align-items:center;
-            justify-content:center;
-            gap:20px;
-            padding:48px;
-            text-align:center;
-            color:#171717;
-            font-family:Georgia, 'Times New Roman', serif;
-          "
-        >
-          <div
-            style="
-              color:${accent};
-              font-size:14px;
-              font-weight:600;
-              letter-spacing:0.12em;
-              text-transform:uppercase;
-              white-space:nowrap;
-            "
-          >
-            Oblique Strategies
-          </div>
-          <div
-            style="
-              font-size:${messageFontSize}px;
-              font-weight:700;
-              line-height:1.05;
-              white-space:pre-line;
-              overflow-wrap:anywhere;
-            "
-          >
-            ${escapedMessage}
-          </div>
-        </div>
-      </foreignObject>
-    </svg>
-  `;
+  throw new Error("No Chrome/Chromium executable found. Set PUPPETEER_EXECUTABLE_PATH to a local browser binary.");
 }
 
 async function main() {
   const entries = await readdir(cardPagesDir, { withFileTypes: true });
   const cardDirectories = entries.filter((entry) => entry.isDirectory());
+  const executablePath = await findBrowserExecutable();
+  const server = await startStaticServer();
 
   await rm(imageOutputDir, { recursive: true, force: true });
   await mkdir(imageOutputDir, { recursive: true });
 
-  await Promise.all(
-    cardDirectories.map(async (entry) => {
+  const browser = await puppeteer.launch({
+    args: ["--disable-dev-shm-usage", "--headless=new", "--hide-scrollbars", ...(process.env.CI ? ["--no-sandbox"] : [])],
+    executablePath,
+    headless: true,
+  });
+
+  try {
+    const page = await browser.newPage();
+    await page.setViewport({ height: outputHeight, width: outputWidth, deviceScaleFactor: 1 });
+
+    for (const entry of cardDirectories) {
       const slug = entry.name;
-      const pageHtml = await readFile(path.join(cardPagesDir, slug, "index.html"), "utf8");
-      const imageData = readCardPageData(pageHtml);
       const outputFile = path.join(imageOutputDir, `${slug}.png`);
 
-      await sharp(Buffer.from(renderCardSvg(imageData)))
-        .png()
-        .toFile(outputFile);
-    }),
-  );
+      await page.goto(`${server.origin}/cards/${slug}`, { waitUntil: "networkidle0" });
+      await page.screenshot({ path: outputFile, type: "png" });
+    }
+  } finally {
+    await browser.close();
+    await server.close();
+  }
 
   console.log(`Generated ${cardDirectories.length} card og:image files in ${imageOutputDir}`);
 }
