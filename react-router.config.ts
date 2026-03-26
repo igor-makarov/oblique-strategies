@@ -1,6 +1,6 @@
 import type { Config } from "@react-router/dev/config";
 
-import { collectCardRoutes } from "./src/js/utils/collectStrategyRoutes";
+import { collectCardRoutes, collectOgCardRoutes } from "./src/js/utils/collectStrategyRoutes";
 
 export default {
   appDirectory: "app",
@@ -8,8 +8,9 @@ export default {
   prerender: async function prerender({ getStaticPaths }) {
     const staticPaths = getStaticPaths();
     const cardPaths = collectCardRoutes();
+    const ogCardPaths = collectOgCardRoutes();
 
-    return [...new Set([...staticPaths, ...cardPaths])];
+    return [...new Set([...staticPaths, ...cardPaths, ...ogCardPaths])];
   },
   basename: process.env.BASE_URL || "/",
 } satisfies Config;
