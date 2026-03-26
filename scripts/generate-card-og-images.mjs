@@ -19,7 +19,7 @@ const namedHtmlEntities = {
 };
 
 function decodeHtmlEntities(value) {
-  return value.replace(/&(#x[0-9a-f]+|#\d+|amp|apos|gt|lt|quot);/gi, (entity, token) => {
+  return value.replace(/&(#x[0-9A-Fa-f]+|#\d+|amp|apos|gt|lt|quot);/gi, (entity, token) => {
     if (token[0] === "#") {
       const isHex = token[1]?.toLowerCase() === "x";
       const codePoint = Number.parseInt(token.slice(isHex ? 2 : 1), isHex ? 16 : 10);
@@ -36,9 +36,10 @@ function escapeHtml(value) {
 }
 
 function readCardPageData(pageHtml) {
+  // Read the specific prerendered card markup emitted by the static build so og images stay aligned with the page content.
   const background = pageHtml.match(/<body[^>]*style="background:([^"]+)"/)?.[1];
-  const accent = pageHtml.match(/<div class="strategy-kicker" style="color:([^"]+)">/)?.[1];
-  const message = pageHtml.match(/<h1 class="strategy-message"><span style="white-space:pre-line">([\s\S]*?)<\/span><\/h1>/)?.[1];
+  const accent = pageHtml.match(/<div[^>]*class="strategy-kicker"[^>]*style="color:([^"]+)"[^>]*>/)?.[1];
+  const message = pageHtml.match(/<h1[^>]*class="strategy-message"[^>]*>\s*<span[^>]*white-space:pre-line[^>]*>([\s\S]*?)<\/span>\s*<\/h1>/)?.[1];
 
   if (!background || !accent || !message) {
     throw new Error("Unable to read prerendered card data from HTML");
