@@ -1,6 +1,6 @@
 import type { Config } from "@react-router/dev/config";
 
-import { collectCardRoutes, collectOgImageRoutes } from "./src/js/utils/collectStrategyRoutes";
+import { collectCardRoutes, collectOgImageRoutes } from "#src/js/utils/collectStrategyRoutes";
 
 const prerenderConcurrency = Number(process.env.PRERENDER_CONCURRENCY || "8");
 

@@ -1,7 +1,7 @@
 import { href } from "react-router";
 
-import { obliqueStrategies } from "../data/obliqueStrategies";
-import { type OgImageSize, ogImageSizeSlug, ogImageSizes } from "./ogImageSizes";
+import { obliqueStrategies } from "#src/js/data/obliqueStrategies";
+import { type OgImageSize, ogImageSizeSlug, ogImageSizes } from "#src/js/utils/ogImageSizes";
 
 export function cardRoute(slug: string): string {
   return href("/cards/:card", { card: slug }) + "/";

@@ -1,9 +1,9 @@
 import { Link } from "react-router";
 
-import ShuffleLink from "@/components/common/ShuffleLink";
-import { obliqueStrategies } from "@/js/data/obliqueStrategies";
-import { cardRoute } from "@/js/utils/collectStrategyRoutes";
-import { getStrategyTheme } from "@/js/utils/getStrategyTheme";
+import ShuffleLink from "#src/components/common/ShuffleLink";
+import { obliqueStrategies } from "#src/js/data/obliqueStrategies";
+import { cardRoute } from "#src/js/utils/collectStrategyRoutes";
+import { getStrategyTheme } from "#src/js/utils/getStrategyTheme";
 
 const pageTitle = "All Cards";
 

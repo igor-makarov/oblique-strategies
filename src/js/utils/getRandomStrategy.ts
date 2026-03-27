@@ -1,4 +1,4 @@
-import { type StrategyCard, obliqueStrategies } from "../data/obliqueStrategies";
+import { type StrategyCard, obliqueStrategies } from "#src/js/data/obliqueStrategies";
 
 export function getRandomStrategy(current?: StrategyCard): StrategyCard {
   if (!current) {

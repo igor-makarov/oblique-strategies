@@ -2,9 +2,8 @@ import { readFile } from "node:fs/promises";
 import satori from "satori";
 import sharp from "sharp";
 
-import { type OgImageSize, getOgImageSize } from "@/js/utils/ogImageSizes";
-
-import type { Route } from "./+types/$size[.]png";
+import { type OgImageSize, getOgImageSize } from "#src/js/utils/ogImageSizes";
+import type { Route } from "#types/app/routes/og/+types/$size[.]png";
 
 const fontDataPromise = readFile("node_modules/@fontsource/inter/files/inter-latin-700-normal.woff");
 

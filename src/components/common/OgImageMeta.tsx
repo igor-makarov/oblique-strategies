@@ -1,5 +1,5 @@
-import { ogImageRoute } from "@/js/utils/collectStrategyRoutes";
-import { ogImageSizeSlug, ogImageSizes, twitterOgImageSize } from "@/js/utils/ogImageSizes";
+import { ogImageRoute } from "#src/js/utils/collectStrategyRoutes";
+import { ogImageSizeSlug, ogImageSizes, twitterOgImageSize } from "#src/js/utils/ogImageSizes";
 
 type Props = {
   siteOrigin: string;

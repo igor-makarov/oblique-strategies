@@ -2,11 +2,10 @@ import { readFile } from "node:fs/promises";
 import satori from "satori";
 import sharp from "sharp";
 
-import { getStrategyBySlug } from "@/js/data/obliqueStrategies";
-import { getStrategyTheme } from "@/js/utils/getStrategyTheme";
-import { type OgImageSize, getOgImageSize } from "@/js/utils/ogImageSizes";
-
-import type { Route } from "./+types/$size[.]png";
+import { getStrategyBySlug } from "#src/js/data/obliqueStrategies";
+import { getStrategyTheme } from "#src/js/utils/getStrategyTheme";
+import { type OgImageSize, getOgImageSize } from "#src/js/utils/ogImageSizes";
+import type { Route } from "#types/app/routes/og/cards/$card/+types/$size[.]png";
 
 const fontDataPromise = readFile("node_modules/@fontsource/inter/files/inter-latin-700-normal.woff");
 

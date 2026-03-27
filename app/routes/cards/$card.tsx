@@ -1,17 +1,16 @@
 import { useCallback, useRef } from "react";
 import { useNavigate } from "react-router";
 
-import CardLayout from "@/components/common/CardLayout";
-import OgImageMeta from "@/components/common/OgImageMeta";
-import PageActions from "@/components/common/PageActions";
-import { useSwipeToShuffle } from "@/components/common/useSwipeToShuffle";
-import { getStrategyBySlug } from "@/js/data/obliqueStrategies";
-import { cardRoute, collectCardRoutes } from "@/js/utils/collectStrategyRoutes";
-import { getRandomStrategy } from "@/js/utils/getRandomStrategy";
-import { getStrategyTheme } from "@/js/utils/getStrategyTheme";
-import { getSiteOrigin } from "@/js/utils/siteUrl";
-
-import type { Route } from "./+types/$card";
+import CardLayout from "#src/components/common/CardLayout";
+import OgImageMeta from "#src/components/common/OgImageMeta";
+import PageActions from "#src/components/common/PageActions";
+import { useSwipeToShuffle } from "#src/components/common/useSwipeToShuffle";
+import { getStrategyBySlug } from "#src/js/data/obliqueStrategies";
+import { cardRoute, collectCardRoutes } from "#src/js/utils/collectStrategyRoutes";
+import { getRandomStrategy } from "#src/js/utils/getRandomStrategy";
+import { getStrategyTheme } from "#src/js/utils/getStrategyTheme";
+import { getSiteOrigin } from "#src/js/utils/siteUrl";
+import type { Route } from "#types/app/routes/cards/+types/$card";
 
 export const handle = {
   // Required for sitemap.xml: this expands the dynamic /cards/:card route into concrete card URLs.

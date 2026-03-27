@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 
-import ShuffleLink from "@/components/common/ShuffleLink";
+import ShuffleLink from "#src/components/common/ShuffleLink";
 
 export default function PageActions() {
   return (

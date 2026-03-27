@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router";
 
-import { cardRoute } from "@/js/utils/collectStrategyRoutes";
-import { getRandomStrategy } from "@/js/utils/getRandomStrategy";
+import { cardRoute } from "#src/js/utils/collectStrategyRoutes";
+import { getRandomStrategy } from "#src/js/utils/getRandomStrategy";
 
 export default function ShuffleLink({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();

@@ -1,9 +1,8 @@
 import { Links, Outlet, Scripts, ScrollRestoration, useLocation, useMatches } from "react-router";
 
-import { getSiteOrigin } from "@/js/utils/siteUrl";
-import "@/styles/style.css";
-
-import type { Route } from "./+types/root";
+import { getSiteOrigin } from "#src/js/utils/siteUrl";
+import "#src/styles/style.css";
+import type { Route } from "#types/app/+types/root";
 
 const pageDescription = "Oblique Strategies by Brian Eno and Peter Schmidt. Your magic 8-ball of inspiration.";
 const siteName = "Oblique Strategies";

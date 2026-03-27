@@ -1,7 +1,7 @@
 import { generateRemixSitemap } from "@forge42/seo-tools/remix/sitemap";
 import { routes } from "virtual:react-router/server-build";
 
-import { getSiteOrigin } from "@/js/utils/siteUrl";
+import { getSiteOrigin } from "#src/js/utils/siteUrl";
 
 export const loader = async () => {
   const sitemap = await generateRemixSitemap({
