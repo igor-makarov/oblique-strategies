@@ -21,7 +21,7 @@ export const handle = {
   },
 };
 
-export async function loader({ params, request }: Route.LoaderArgs) {
+export async function loader({ params }: Route.LoaderArgs) {
   const slug = params.card;
   const strategy = getStrategyBySlug(slug);
 
@@ -30,7 +30,7 @@ export async function loader({ params, request }: Route.LoaderArgs) {
   }
 
   const { background } = getStrategyTheme(strategy);
-  const siteOrigin = getSiteOrigin(request);
+  const siteOrigin = getSiteOrigin();
 
   return { strategy, background, siteOrigin };
 }

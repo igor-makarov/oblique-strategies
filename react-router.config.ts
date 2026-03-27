@@ -13,5 +13,4 @@ export default {
     return [...new Set([...staticPaths, ...cardPaths, ...ogCardPaths])];
   },
   basename: process.env.BASE_URL || "/",
-  trailingSlash: false,
 } satisfies Config;

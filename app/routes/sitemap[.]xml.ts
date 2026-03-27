@@ -1,13 +1,14 @@
 import { generateRemixSitemap } from "@forge42/seo-tools/remix/sitemap";
 import { routes } from "virtual:react-router/server-build";
 
-export const loader = async () => {
-  const domain = process.env.SITEMAP_BASE_URL;
-  if (!domain) {
-    throw new Error("SITEMAP_BASE_URL environment variable is required");
-  }
+import { getSiteOrigin } from "@/js/utils/siteUrl";
 
-  const sitemap = await generateRemixSitemap({ domain, routes });
+export const loader = async () => {
+  const sitemap = await generateRemixSitemap({
+    domain: getSiteOrigin(),
+    routes,
+    ignore: ["*.png"],
+  });
 
   return new Response(sitemap, {
     headers: {

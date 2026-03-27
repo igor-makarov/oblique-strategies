@@ -4,7 +4,7 @@ import { obliqueStrategies } from "../data/obliqueStrategies";
 import { type OgImageSize, ogImageSizeSlug, ogImageSizes } from "./ogImageSizes";
 
 export function cardRoute(slug: string): string {
-  return href("/cards/:card", { card: slug });
+  return href("/cards/:card", { card: slug }) + "/";
 }
 
 export function ogCardImageRoute(slug: string, size: OgImageSize): string {

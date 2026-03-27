@@ -1,6 +1,6 @@
 import { Links, Outlet, Scripts, ScrollRestoration, useLocation, useMatches } from "react-router";
 
-import { canonicalPathname, getSiteOrigin } from "@/js/utils/siteUrl";
+import { getSiteOrigin } from "@/js/utils/siteUrl";
 import "@/styles/style.css";
 
 import type { Route } from "./+types/root";
@@ -19,16 +19,16 @@ function useBodyBackground(): string | undefined {
   }
 }
 
-export async function loader({ request }: Route.LoaderArgs) {
+export async function loader() {
   return {
-    siteOrigin: getSiteOrigin(request),
+    siteOrigin: getSiteOrigin(),
   };
 }
 
 export default function Root({ loaderData }: Route.ComponentProps) {
   const background = useBodyBackground();
   const location = useLocation();
-  const canonicalUrl = `${loaderData.siteOrigin}${canonicalPathname(location.pathname)}`;
+  const canonicalUrl = `${loaderData.siteOrigin}${location.pathname}`;
 
   return (
     <html lang="en">
