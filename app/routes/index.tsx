@@ -4,8 +4,8 @@ import CardLayout from "@/components/common/CardLayout";
 import OgImageMeta from "@/components/common/OgImageMeta";
 import { cardRoute } from "@/js/utils/collectStrategyRoutes";
 import { getRandomStrategy } from "@/js/utils/getRandomStrategy";
+import { useRootLoaderData } from "@/js/utils/useRootLoaderData";
 
-import { useRootLoaderData } from "../hooks/useRootLoaderData";
 import type { Route } from "./+types/index";
 
 const pageTitle = "Oblique Strategies";
