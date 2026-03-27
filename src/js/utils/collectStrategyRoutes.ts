@@ -19,10 +19,9 @@ export function collectCardRoutes(): string[] {
   return obliqueStrategies.map((strategy) => cardRoute(strategy.slug));
 }
 
-export function collectOgIndexRoutes(): string[] {
-  return ogImageSizes.map((size) => ogIndexImageRoute(size));
-}
-
-export function collectOgCardRoutes(): string[] {
-  return obliqueStrategies.flatMap((strategy) => ogImageSizes.map((size) => ogCardImageRoute(strategy.slug, size)));
+export function collectOgImageRoutes(): string[] {
+  return [
+    ...ogImageSizes.map((size) => ogIndexImageRoute(size)),
+    ...obliqueStrategies.flatMap((strategy) => ogImageSizes.map((size) => ogCardImageRoute(strategy.slug, size))),
+  ];
 }
