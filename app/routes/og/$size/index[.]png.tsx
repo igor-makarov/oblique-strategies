@@ -17,7 +17,7 @@ function rainbowLetters(text: string): { letter: string; color: string }[] {
 
   return letters.map((letter) => {
     if (letter === " ") {
-      return { letter, color: "transparent" };
+      return { letter, color: "#171717" };
     }
 
     const hue = (idx * 360) / nonSpaceCount;
@@ -84,7 +84,7 @@ async function renderPng([width, height]: OgImageSize): Promise<Buffer> {
             }}
           >
             {letters.map((item, index) => (
-              <span key={index} style={{ color: item.color === "transparent" ? "#171717" : item.color }}>
+              <span key={index} style={{ color: item.color }}>
                 {item.letter === " " ? "\u00A0" : item.letter}
               </span>
             ))}
