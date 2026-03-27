@@ -34,6 +34,7 @@ async function renderPng([width, height]: OgImageSize): Promise<Buffer> {
   const titleFontSize = cardHeightPx * 0.11;
   const cardWidth = "58.333333%";
   const cardHeight = `${(cardHeightPx / height) * 100}%`;
+  const contentPadding = `${Math.min(cardWidthPx, cardHeightPx) * 0.09}px`;
   const letters = rainbowLetters(title);
 
   const svg = await satori(
@@ -66,7 +67,7 @@ async function renderPng([width, height]: OgImageSize): Promise<Buffer> {
             display: "flex",
             height: "100%",
             justifyContent: "center",
-            padding: "3vw",
+            padding: contentPadding,
             textAlign: "center",
             width: "100%",
           }}

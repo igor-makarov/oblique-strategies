@@ -6,6 +6,7 @@ import { getRandomStrategy } from "@/js/utils/getRandomStrategy";
 import { ogImageSizeSlug, ogImageSizes, twitterOgImageSize } from "@/js/utils/ogImageSizes";
 import { getSiteOrigin } from "@/js/utils/siteUrl";
 
+import type { Route as RootRoute } from "../+types/root";
 import type { Route } from "./+types/index";
 
 const pageTitle = "Oblique Strategies";
@@ -27,7 +28,7 @@ export async function clientLoader({ serverLoader }: Route.ClientLoaderArgs) {
 clientLoader.hydrate = true as const;
 
 export function HydrateFallback() {
-  const rootLoaderData = useRouteLoaderData("root") as { siteOrigin: string } | undefined;
+  const rootLoaderData = useRouteLoaderData("root") as RootRoute.ComponentProps["loaderData"] | undefined;
 
   if (!rootLoaderData) return null;
 
