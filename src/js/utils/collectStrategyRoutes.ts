@@ -11,8 +11,16 @@ export function ogCardImageRoute(slug: string, size: OgImageSize): string {
   return href("/og/:size/cards/:card.png", { card: slug, size: ogImageSizeSlug(size) });
 }
 
+export function ogIndexImageRoute(size: OgImageSize): string {
+  return href("/og/:size/index.png", { size: ogImageSizeSlug(size) });
+}
+
 export function collectCardRoutes(): string[] {
   return obliqueStrategies.map((strategy) => cardRoute(strategy.slug));
+}
+
+export function collectOgIndexRoutes(): string[] {
+  return ogImageSizes.map((size) => ogIndexImageRoute(size));
 }
 
 export function collectOgCardRoutes(): string[] {
