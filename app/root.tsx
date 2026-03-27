@@ -25,6 +25,8 @@ export async function loader() {
   };
 }
 
+export type RootLoaderData = Awaited<ReturnType<typeof loader>>;
+
 export default function Root({ loaderData }: Route.ComponentProps) {
   const background = useBodyBackground();
   const location = useLocation();
