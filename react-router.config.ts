@@ -1,6 +1,6 @@
 import type { Config } from "@react-router/dev/config";
 
-import { collectCardRoutes, collectOgCardRoutes, collectOgIndexRoutes } from "./src/js/utils/collectStrategyRoutes";
+import { collectCardRoutes, collectOgCardRoutes } from "./src/js/utils/collectStrategyRoutes";
 
 export default {
   appDirectory: "app",
@@ -9,9 +9,8 @@ export default {
     const staticPaths = getStaticPaths();
     const cardPaths = collectCardRoutes();
     const ogCardPaths = collectOgCardRoutes();
-    const ogIndexPaths = collectOgIndexRoutes();
 
-    return [...new Set([...staticPaths, ...cardPaths, ...ogCardPaths, ...ogIndexPaths])];
+    return [...new Set([...staticPaths, ...cardPaths, ...ogCardPaths])];
   },
   basename: process.env.BASE_URL || "/",
   trailingSlash: false,
