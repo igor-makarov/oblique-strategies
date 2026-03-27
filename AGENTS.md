@@ -6,3 +6,4 @@ Basic rules:
 - Format: `npm run format`
 - Build: `npm run build` (noisy, use grep, head, tail)
 - See the rest in the `package.json`
+- RR7 routes are in `app/routes.ts`
