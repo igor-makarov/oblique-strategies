@@ -22,6 +22,7 @@ function useBodyBackground(): string | undefined {
 export async function loader() {
   return {
     siteOrigin: getSiteOrigin(),
+    siteName,
   };
 }
 

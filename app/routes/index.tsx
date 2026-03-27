@@ -1,4 +1,4 @@
-import { Navigate } from "react-router";
+import { Navigate, useRouteLoaderData } from "react-router";
 
 import CardLayout from "@/components/common/CardLayout";
 import { cardRoute } from "@/js/utils/collectStrategyRoutes";
@@ -8,16 +8,30 @@ import type { Route } from "./+types/index";
 
 const pageTitle = "Oblique Strategies";
 
-export async function clientLoader() {
-  const strategy = getRandomStrategy();
-  return { to: cardRoute(strategy.slug) };
+export async function loader() {
+  return { pageTitle };
 }
 
+export async function clientLoader({ serverLoader }: Route.ClientLoaderArgs) {
+  const strategy = getRandomStrategy();
+  const serverData = await serverLoader();
+
+  return {
+    ...serverData,
+    to: cardRoute(strategy.slug),
+  };
+}
+
+clientLoader.hydrate = true as const;
+
 export function HydrateFallback() {
+  const rootLoaderData = useRouteLoaderData("root") as { siteName: string } | undefined;
+  const title = rootLoaderData?.siteName ?? pageTitle;
+
   return (
     <>
-      <title>{pageTitle}</title>
-      <meta property="og:title" content={pageTitle} />
+      <title>{title}</title>
+      <meta property="og:title" content={title} />
       <CardLayout>
         <div className="shuffle-spinner" />
       </CardLayout>
@@ -28,8 +42,8 @@ export function HydrateFallback() {
 export default function HomePage({ loaderData }: Route.ComponentProps) {
   return (
     <>
-      <title>{pageTitle}</title>
-      <meta property="og:title" content={pageTitle} />
+      <title>{loaderData.pageTitle}</title>
+      <meta property="og:title" content={loaderData.pageTitle} />
       <Navigate to={loaderData.to} replace />
     </>
   );
