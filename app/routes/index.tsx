@@ -11,14 +11,10 @@ import type { Route } from "./+types/index";
 const pageTitle = "Oblique Strategies";
 
 function HomeMeta({ siteOrigin }: { siteOrigin: string }) {
-  const canonicalUrl = `${siteOrigin}/`;
-
   return (
     <>
       <title>{pageTitle}</title>
       <meta property="og:title" content={pageTitle} />
-      <meta property="og:url" content={canonicalUrl} />
-      <link rel="canonical" href={canonicalUrl} />
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:image" content={`${siteOrigin}${ogIndexImageRoute(twitterOgImageSize)}`} />
       {ogImageSizes.flatMap((size) => [
