@@ -4,7 +4,7 @@ import sharp from "sharp";
 
 import { type OgImageSize, getOgImageSize } from "@/js/utils/ogImageSizes";
 
-import type { Route } from "./+types/index[.]png";
+import type { Route } from "./+types/$size[.]png";
 
 const fontDataPromise = readFile("node_modules/@fontsource/inter/files/inter-latin-700-normal.woff");
 

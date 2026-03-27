@@ -2,13 +2,13 @@ import { useCallback, useRef } from "react";
 import { useNavigate } from "react-router";
 
 import CardLayout from "@/components/common/CardLayout";
+import OgImageMeta from "@/components/common/OgImageMeta";
 import PageActions from "@/components/common/PageActions";
 import { useSwipeToShuffle } from "@/components/common/useSwipeToShuffle";
 import { getStrategyBySlug } from "@/js/data/obliqueStrategies";
-import { cardRoute, collectCardRoutes, ogCardImageRoute } from "@/js/utils/collectStrategyRoutes";
+import { cardRoute, collectCardRoutes } from "@/js/utils/collectStrategyRoutes";
 import { getRandomStrategy } from "@/js/utils/getRandomStrategy";
 import { getStrategyTheme } from "@/js/utils/getStrategyTheme";
-import { ogImageSizeSlug, ogImageSizes, twitterOgImageSize } from "@/js/utils/ogImageSizes";
 import { getSiteOrigin } from "@/js/utils/siteUrl";
 
 import type { Route } from "./+types/$card";
@@ -51,13 +51,7 @@ export default function CardPage({ loaderData }: Route.ComponentProps) {
     <>
       <title>{`Oblique Strategies - ${strategy.message}`}</title>
       <meta property="og:title" content={strategy.message} />
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:image" content={`${siteOrigin}${ogCardImageRoute(strategy.slug, twitterOgImageSize)}`} />
-      {ogImageSizes.flatMap((size) => [
-        <meta key={`og:image:${ogImageSizeSlug(size)}`} property="og:image" content={`${siteOrigin}${ogCardImageRoute(strategy.slug, size)}`} />,
-        <meta key={`og:image:width:${ogImageSizeSlug(size)}`} property="og:image:width" content={String(size[0])} />,
-        <meta key={`og:image:height:${ogImageSizeSlug(size)}`} property="og:image:height" content={String(size[1])} />,
-      ])}
+      <OgImageMeta siteOrigin={siteOrigin} routePath={cardRoute(strategy.slug)} />
       <CardLayout cardRef={cardRef}>
         <div className="strategy-kicker" style={accentStyle}>
           Oblique Strategies

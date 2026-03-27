@@ -1,9 +1,9 @@
 import { Navigate } from "react-router";
 
 import CardLayout from "@/components/common/CardLayout";
-import { cardRoute, ogIndexImageRoute } from "@/js/utils/collectStrategyRoutes";
+import OgImageMeta from "@/components/common/OgImageMeta";
+import { cardRoute } from "@/js/utils/collectStrategyRoutes";
 import { getRandomStrategy } from "@/js/utils/getRandomStrategy";
-import { ogImageSizeSlug, ogImageSizes, twitterOgImageSize } from "@/js/utils/ogImageSizes";
 
 import { useRootLoaderData } from "../hooks/useRootLoaderData";
 import type { Route } from "./+types/index";
@@ -15,13 +15,7 @@ function HomeMeta({ siteOrigin }: { siteOrigin: string }) {
     <>
       <title>{pageTitle}</title>
       <meta property="og:title" content={pageTitle} />
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:image" content={`${siteOrigin}${ogIndexImageRoute(twitterOgImageSize)}`} />
-      {ogImageSizes.flatMap((size) => [
-        <meta key={`og:image:${ogImageSizeSlug(size)}`} property="og:image" content={`${siteOrigin}${ogIndexImageRoute(size)}`} />,
-        <meta key={`og:image:width:${ogImageSizeSlug(size)}`} property="og:image:width" content={String(size[0])} />,
-        <meta key={`og:image:height:${ogImageSizeSlug(size)}`} property="og:image:height" content={String(size[1])} />,
-      ])}
+      <OgImageMeta siteOrigin={siteOrigin} routePath="/" />
     </>
   );
 }

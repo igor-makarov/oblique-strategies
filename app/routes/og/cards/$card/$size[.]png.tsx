@@ -6,7 +6,7 @@ import { getStrategyBySlug } from "@/js/data/obliqueStrategies";
 import { getStrategyTheme } from "@/js/utils/getStrategyTheme";
 import { type OgImageSize, getOgImageSize } from "@/js/utils/ogImageSizes";
 
-import type { Route } from "./+types/$card[.]png";
+import type { Route } from "./+types/$size[.]png";
 
 const fontDataPromise = readFile("node_modules/@fontsource/inter/files/inter-latin-700-normal.woff");
 
