@@ -1,42 +1,33 @@
-import { readFile } from "node:fs/promises";
-import satori from "satori";
-import sharp from "sharp";
-
 import { type OgImageSize, getOgImageSize } from "#src/js/utils/ogImageSizes";
+import { getOgCardLayout, renderImage, toArrayBuffer } from "#src/js/utils/renderImage";
 import type { Route } from "#types/app/routes/og/+types/$size[.]png";
-
-const fontDataPromise = readFile("node_modules/@fontsource/inter/files/inter-latin-700-normal.woff");
 
 const title = "Oblique Strategies";
 
-function rainbowLetters(text: string): { letter: string; color: string }[] {
+function rainbowLetters(text: string): { color: string; letter: string }[] {
   const letters = text.split("");
   const nonSpaceCount = letters.filter((letter) => letter !== " ").length;
   let idx = 0;
 
   return letters.map((letter) => {
     if (letter === " ") {
-      return { letter, color: "#171717" };
+      return { color: "#171717", letter };
     }
 
     const hue = (idx * 360) / nonSpaceCount;
     idx += 1;
 
-    return { letter, color: `hsl(${hue} 65% 34%)` };
+    return { color: `hsl(${hue} 65% 34%)`, letter };
   });
 }
 
-async function renderPng([width, height]: OgImageSize): Promise<Buffer> {
-  const interBold = await fontDataPromise;
-  const cardWidthPx = width * 0.5833333333;
-  const cardHeightPx = (cardWidthPx * 5) / 7;
+async function renderCard(size: OgImageSize): Promise<Uint8Array> {
+  const { cardHeight, cardHeightPx, cardWidth, cardWidthPx } = getOgCardLayout(size);
   const titleFontSize = cardHeightPx * 0.11;
-  const cardWidth = "58.333333%";
-  const cardHeight = `${(cardHeightPx / height) * 100}%`;
   const contentPadding = `${Math.min(cardWidthPx, cardHeightPx) * 0.09}px`;
   const letters = rainbowLetters(title);
 
-  const svg = await satori(
+  return renderImage(
     <div
       style={{
         alignItems: "center",
@@ -90,21 +81,8 @@ async function renderPng([width, height]: OgImageSize): Promise<Buffer> {
         </div>
       </div>
     </div>,
-    {
-      fonts: [
-        {
-          data: interBold,
-          name: "Inter",
-          style: "normal",
-          weight: 700,
-        },
-      ],
-      height,
-      width,
-    },
+    size,
   );
-
-  return sharp(Buffer.from(svg)).png().toBuffer();
 }
 
 export async function loader({ params }: Route.LoaderArgs) {
@@ -114,7 +92,11 @@ export async function loader({ params }: Route.LoaderArgs) {
     throw new Response("Not Found", { status: 404 });
   }
 
-  const png = await renderPng(size);
+  const png = await renderCard(size);
 
-  return new Response(new Uint8Array(png), { headers: { "Content-Type": "image/png" } });
+  return new Response(toArrayBuffer(png), {
+    headers: {
+      "Content-Type": "image/png",
+    },
+  });
 }

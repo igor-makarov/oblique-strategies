@@ -1,23 +1,14 @@
-import { readFile } from "node:fs/promises";
-import satori from "satori";
-import sharp from "sharp";
-
 import { getStrategyBySlug } from "#src/js/data/obliqueStrategies";
 import { getStrategyTheme } from "#src/js/utils/getStrategyTheme";
 import { type OgImageSize, getOgImageSize } from "#src/js/utils/ogImageSizes";
+import { getOgCardLayout, renderImage, toArrayBuffer } from "#src/js/utils/renderImage";
 import type { Route } from "#types/app/routes/og/cards/$card/+types/$size[.]png";
 
-const fontDataPromise = readFile("node_modules/@fontsource/inter/files/inter-latin-700-normal.woff");
-
-async function renderPng(title: string, background: string, [width, height]: OgImageSize): Promise<Buffer> {
-  const interBold = await fontDataPromise;
-  const cardWidthPx = width * 0.5833333333;
-  const cardHeightPx = (cardWidthPx * 5) / 7;
+async function renderCard(title: string, background: string, size: OgImageSize): Promise<Uint8Array> {
+  const { cardHeight, cardHeightPx, cardWidth } = getOgCardLayout(size);
   const titleFontSize = `${cardHeightPx * 0.144}px`;
-  const cardWidth = "58.333333%";
-  const cardHeight = `${(cardHeightPx / height) * 100}%`;
 
-  const svg = await satori(
+  return renderImage(
     <div
       style={{
         alignItems: "center",
@@ -67,21 +58,8 @@ async function renderPng(title: string, background: string, [width, height]: OgI
         </div>
       </div>
     </div>,
-    {
-      fonts: [
-        {
-          data: interBold,
-          name: "Inter",
-          style: "normal",
-          weight: 700,
-        },
-      ],
-      height,
-      width,
-    },
+    size,
   );
-
-  return sharp(Buffer.from(svg)).png().toBuffer();
 }
 
 export async function loader({ params }: Route.LoaderArgs) {
@@ -93,7 +71,11 @@ export async function loader({ params }: Route.LoaderArgs) {
   }
 
   const { background } = getStrategyTheme(strategy);
-  const png = await renderPng(strategy.message, background, size);
+  const png = await renderCard(strategy.message, background, size);
 
-  return new Response(new Uint8Array(png), { headers: { "Content-Type": "image/png" } });
+  return new Response(toArrayBuffer(png), {
+    headers: {
+      "Content-Type": "image/png",
+    },
+  });
 }
