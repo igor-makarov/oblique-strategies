@@ -1,11 +1,8 @@
-import { readFile } from "node:fs/promises";
 import satori from "satori";
-import sharp from "sharp";
 
 import { type OgImageSize, getOgImageSize } from "#src/js/utils/ogImageSizes";
+import { getInterBoldFont, svgToPng } from "#src/js/utils/ogRender";
 import type { Route } from "#types/app/routes/og/+types/$size[.]png";
-
-const fontDataPromise = readFile("node_modules/@fontsource/inter/files/inter-latin-700-normal.woff");
 
 const title = "Oblique Strategies";
 
@@ -26,8 +23,8 @@ function rainbowLetters(text: string): { letter: string; color: string }[] {
   });
 }
 
-async function renderPng([width, height]: OgImageSize): Promise<Buffer> {
-  const interBold = await fontDataPromise;
+async function renderPng(requestUrl: string, [width, height]: OgImageSize): Promise<Uint8Array> {
+  const interBold = await getInterBoldFont(requestUrl);
   const cardWidthPx = width * 0.5833333333;
   const cardHeightPx = (cardWidthPx * 5) / 7;
   const titleFontSize = cardHeightPx * 0.11;
@@ -105,17 +102,17 @@ async function renderPng([width, height]: OgImageSize): Promise<Buffer> {
     },
   );
 
-  return sharp(Buffer.from(svg)).png().toBuffer();
+  return svgToPng(svg);
 }
 
-export async function loader({ params }: Route.LoaderArgs) {
+export async function loader({ request, params }: Route.LoaderArgs) {
   const size = getOgImageSize(params.size);
 
   if (!size) {
     throw new Response("Not Found", { status: 404 });
   }
 
-  const png = await renderPng(size);
+  const png = await renderPng(request.url, size);
 
-  return new Response(new Uint8Array(png), { headers: { "Content-Type": "image/png" } });
+  return new Response(png.buffer as ArrayBuffer, { headers: { "Content-Type": "image/png" } });
 }

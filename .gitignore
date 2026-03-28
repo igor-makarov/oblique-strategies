@@ -5,3 +5,5 @@ build
 .DS_Store
 .env.local
 .env.*.local
+.wrangler
+worker-configuration.d.ts

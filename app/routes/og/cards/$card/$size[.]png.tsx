@@ -1,16 +1,13 @@
-import { readFile } from "node:fs/promises";
 import satori from "satori";
-import sharp from "sharp";
 
 import { getStrategyBySlug } from "#src/js/data/obliqueStrategies";
 import { getStrategyTheme } from "#src/js/utils/getStrategyTheme";
 import { type OgImageSize, getOgImageSize } from "#src/js/utils/ogImageSizes";
+import { getInterBoldFont, svgToPng } from "#src/js/utils/ogRender";
 import type { Route } from "#types/app/routes/og/cards/$card/+types/$size[.]png";
 
-const fontDataPromise = readFile("node_modules/@fontsource/inter/files/inter-latin-700-normal.woff");
-
-async function renderPng(title: string, background: string, [width, height]: OgImageSize): Promise<Buffer> {
-  const interBold = await fontDataPromise;
+async function renderPng(requestUrl: string, title: string, background: string, [width, height]: OgImageSize): Promise<Uint8Array> {
+  const interBold = await getInterBoldFont(requestUrl);
   const cardWidthPx = width * 0.5833333333;
   const cardHeightPx = (cardWidthPx * 5) / 7;
   const titleFontSize = `${cardHeightPx * 0.144}px`;
@@ -82,10 +79,10 @@ async function renderPng(title: string, background: string, [width, height]: OgI
     },
   );
 
-  return sharp(Buffer.from(svg)).png().toBuffer();
+  return svgToPng(svg);
 }
 
-export async function loader({ params }: Route.LoaderArgs) {
+export async function loader({ request, params }: Route.LoaderArgs) {
   const size = getOgImageSize(params.size);
   const strategy = getStrategyBySlug(params.card);
 
@@ -94,7 +91,7 @@ export async function loader({ params }: Route.LoaderArgs) {
   }
 
   const { background } = getStrategyTheme(strategy);
-  const png = await renderPng(strategy.message, background, size);
+  const png = await renderPng(request.url, strategy.message, background, size);
 
-  return new Response(new Uint8Array(png), { headers: { "Content-Type": "image/png" } });
+  return new Response(png.buffer as ArrayBuffer, { headers: { "Content-Type": "image/png" } });
 }

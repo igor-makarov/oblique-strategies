@@ -2,6 +2,8 @@ node_modules
 .build
 build
 .react-router
+.wrangler
+worker-configuration.d.ts
 .pi
 .DS_Store
 .env.local
