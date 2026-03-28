@@ -1,3 +1,4 @@
+import { cloudflare } from "@cloudflare/vite-plugin";
 import { reactRouter } from "@react-router/dev/vite";
 import { type Plugin, defineConfig, loadEnv } from "vite";
 import devtoolsJson from "vite-plugin-devtools-json";
@@ -34,5 +35,16 @@ export default defineConfig({
   build: {
     assetsDir: (process.env.BASE_URL || "/").substring(1) + "assets/",
   },
-  plugins: [lanServer(), additionalHotReloadFiles(), devtoolsJson(), tsconfigPaths(), reactRouter()],
+  define: {
+    "process.env.SITEMAP_BASE_URL": JSON.stringify(process.env.SITEMAP_BASE_URL),
+    "process.env.CF_PAGES_URL": JSON.stringify(process.env.CF_PAGES_URL),
+  },
+  plugins: [
+    cloudflare({ viteEnvironment: { name: "ssr" } }),
+    lanServer(),
+    additionalHotReloadFiles(),
+    devtoolsJson(),
+    tsconfigPaths(),
+    reactRouter(),
+  ],
 });

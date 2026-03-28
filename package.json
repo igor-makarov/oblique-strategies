@@ -7,19 +7,20 @@
   },
   "scripts": {
     "dev": "react-router dev --host 0.0.0.0 --port 3000",
-    "build": "react-router build",
-    "start": "react-router-serve ./build/server/index.js",
-    "preview": "serve build/client",
-    "typecheck": "react-router typegen && tsc --noEmit",
-    "check": "react-router typegen && tsc --noEmit",
+    "build": "react-router build && cp -r build/server build/client/_worker.js",
+    "preview": "npm run build && vite preview",
+    "deploy": "npm run build && wrangler pages deploy",
+    "cf-typegen": "wrangler types",
+    "typecheck": "npm run cf-typegen && react-router typegen && tsc --noEmit",
+    "check": "npm run cf-typegen && react-router typegen && tsc --noEmit",
     "format": "prettier --write --list-different .",
     "format:check": "prettier --check ."
   },
   "dependencies": {
     "@forge42/seo-tools": "^1.4.5",
     "@react-router/dev": "^7.10.1",
-    "@react-router/node": "^7.10.1",
-    "@react-router/serve": "^7.10.1",
+    "@resvg/resvg-wasm": "^2.6.2",
+    "satori": "^0.26.0",
     "@types/react": "^19.2.5",
     "@types/react-dom": "^19.2.3",
     "isbot": "^5",
@@ -29,16 +30,17 @@
     "vite": "^7.2.7"
   },
   "devDependencies": {
+    "@cloudflare/vite-plugin": "^1.30.2",
+    "@cloudflare/workers-types": "^4.20260317.1",
     "@fontsource/inter": "^5.2.8",
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
     "@tsconfig/vite-react": "^7.0.2",
     "@types/node": "^25.5.0",
     "prettier": "^3.6.2",
-    "satori": "^0.26.0",
     "serve": "^14.2.5",
-    "sharp": "^0.34.5",
     "typescript": "^5.9.2",
     "vite-plugin-devtools-json": "^1.0.0",
-    "vite-tsconfig-paths": "^5.1.4"
+    "vite-tsconfig-paths": "^5.1.4",
+    "wrangler": "^4.78.0"
   }
 }

@@ -7,9 +7,9 @@
       "#app/*": ["app/*"],
       "#types/*": [".react-router/types/*"]
     },
-    "types": ["node", "vite/client"],
+    "types": ["vite/client"],
     "rootDirs": [".", ".react-router/types"]
   },
-  "include": [".react-router/types/**/*", "**/*.ts", "**/*.tsx"],
+  "include": [".react-router/types/**/*", "worker-configuration.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["dist", "build", "coverage", "node_modules"]
 }
