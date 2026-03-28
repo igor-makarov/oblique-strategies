@@ -80,7 +80,7 @@ function buildRoutesJson(files) {
 
   return {
     version: 1,
-    include: ["/test"],
+    include: ["/*"],
     exclude: [...excludes].sort(),
   };
 }
