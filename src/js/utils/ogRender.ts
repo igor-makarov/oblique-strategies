@@ -1,21 +1,26 @@
-import type { Resvg as ResvgType } from "@resvg/resvg-wasm";
+import { Resvg, initWasm as initResvg } from "@resvg/resvg-wasm";
+// @ts-expect-error -- WASM module import handled by @cloudflare/vite-plugin
+import resvgWasm from "@resvg/resvg-wasm/index_bg.wasm";
+import satoriImpl, { init as initSatori } from "satori/standalone";
+import type { SatoriOptions } from "satori/standalone";
+// @ts-expect-error -- WASM module import handled by @cloudflare/vite-plugin
+import yogaWasm from "satori/yoga.wasm";
 
-let ResvgClass: typeof ResvgType | null = null;
+let initialized = false;
 
-async function ensureWasmInitialized(): Promise<typeof ResvgType> {
-  if (ResvgClass) return ResvgClass;
-  const [resvgModule, wasmModule] = await Promise.all([
-    import("@resvg/resvg-wasm"),
-    // @ts-expect-error -- WASM module import handled by @cloudflare/vite-plugin
-    import("@resvg/resvg-wasm/index_bg.wasm"),
-  ]);
-  await resvgModule.initWasm(wasmModule.default);
-  ResvgClass = resvgModule.Resvg;
-  return ResvgClass;
+async function ensureInitialized(): Promise<void> {
+  if (initialized) return;
+  await Promise.all([initSatori(yogaWasm), initResvg(resvgWasm)]);
+  initialized = true;
+}
+
+export async function satori(element: React.ReactNode, options: SatoriOptions): Promise<string> {
+  await ensureInitialized();
+  return satoriImpl(element, options);
 }
 
 export async function svgToPng(svg: string): Promise<Uint8Array> {
-  const Resvg = await ensureWasmInitialized();
+  await ensureInitialized();
   const resvg = new Resvg(svg);
   const rendered = resvg.render();
   const png = rendered.asPng();

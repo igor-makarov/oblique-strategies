@@ -1,7 +1,4 @@
-import satori from "satori";
-
 import { type OgImageSize, getOgImageSize } from "#src/js/utils/ogImageSizes";
-import { getInterBoldFont, svgToPng } from "#src/js/utils/ogRender";
 import type { Route } from "#types/app/routes/og/+types/$size[.]png";
 
 const title = "Oblique Strategies";
@@ -24,6 +21,7 @@ function rainbowLetters(text: string): { letter: string; color: string }[] {
 }
 
 async function renderPng(requestUrl: string, [width, height]: OgImageSize): Promise<Uint8Array> {
+  const { satori, getInterBoldFont, svgToPng } = await import("#src/js/utils/ogRender");
   const interBold = await getInterBoldFont(requestUrl);
   const cardWidthPx = width * 0.5833333333;
   const cardHeightPx = (cardWidthPx * 5) / 7;

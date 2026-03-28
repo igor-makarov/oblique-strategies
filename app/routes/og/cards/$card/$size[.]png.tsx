@@ -1,12 +1,10 @@
-import satori from "satori";
-
 import { getStrategyBySlug } from "#src/js/data/obliqueStrategies";
 import { getStrategyTheme } from "#src/js/utils/getStrategyTheme";
 import { type OgImageSize, getOgImageSize } from "#src/js/utils/ogImageSizes";
-import { getInterBoldFont, svgToPng } from "#src/js/utils/ogRender";
 import type { Route } from "#types/app/routes/og/cards/$card/+types/$size[.]png";
 
 async function renderPng(requestUrl: string, title: string, background: string, [width, height]: OgImageSize): Promise<Uint8Array> {
+  const { satori, getInterBoldFont, svgToPng } = await import("#src/js/utils/ogRender");
   const interBold = await getInterBoldFont(requestUrl);
   const cardWidthPx = width * 0.5833333333;
   const cardHeightPx = (cardWidthPx * 5) / 7;
