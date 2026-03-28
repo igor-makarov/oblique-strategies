@@ -7,9 +7,9 @@
   },
   "scripts": {
     "dev": "react-router dev --host 0.0.0.0 --port 3000",
-    "build": "react-router build",
+    "build": "react-router build && cp -r build/server build/client/_worker.js",
     "preview": "npm run build && vite preview",
-    "deploy": "npm run build && wrangler deploy",
+    "deploy": "npm run build && wrangler pages deploy",
     "cf-typegen": "wrangler types",
     "typecheck": "npm run cf-typegen && react-router typegen && tsc --noEmit",
     "check": "npm run cf-typegen && react-router typegen && tsc --noEmit",
