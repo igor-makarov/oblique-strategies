@@ -91,5 +91,6 @@ export async function loader({ request, params }: Route.LoaderArgs) {
   const { background } = getStrategyTheme(strategy);
   const png = await renderPng(request.url, strategy.message, background, size);
 
-  return new Response(png.buffer as ArrayBuffer, { headers: { "Content-Type": "image/png" } });
+  const body = png.buffer.slice(png.byteOffset, png.byteOffset + png.byteLength) as ArrayBuffer;
+  return new Response(body, { headers: { "Content-Type": "image/png" } });
 }
