@@ -19,6 +19,10 @@ export default {
 
   basename: process.env.BASE_URL || "/",
 
+  routeDiscovery: {
+    mode: "initial",
+  },
+
   future: {
     v8_viteEnvironmentApi: true,
   },
