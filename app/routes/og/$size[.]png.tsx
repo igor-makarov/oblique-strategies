@@ -52,7 +52,6 @@ async function renderPng([width, height]: OgImageSize): Promise<Buffer> {
           background: "rgba(255, 255, 255, 0.92)",
           border: "1px solid rgba(23, 23, 23, 0.12)",
           borderRadius: "3.43%",
-          boxShadow: "0 18px 60px rgba(23, 23, 23, 0.12)",
           color: "#171717",
           display: "flex",
           fontFamily: "Inter",
