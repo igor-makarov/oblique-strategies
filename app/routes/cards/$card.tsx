@@ -21,8 +21,6 @@ export const handle = {
 };
 
 export async function loader({ params }: Route.LoaderArgs) {
-  console.log("[route] /cards/:card/", { card: params.card });
-
   const slug = params.card;
   const strategy = getStrategyBySlug(slug);
 
