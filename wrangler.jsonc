@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "oblique-strategies",
+  "name": "oblique-strategies-workers",
   "compatibility_date": "2026-03-17",
   "main": "./workers/app.ts",
   "compatibility_flags": ["nodejs_compat"],
