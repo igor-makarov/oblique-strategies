@@ -63,6 +63,8 @@ async function renderCard(title: string, background: string, size: OgImageSize):
 }
 
 export async function loader({ params }: Route.LoaderArgs) {
+  console.log("[route] /og/cards/:card/:size.png", { card: params.card, size: params.size });
+
   const size = getOgImageSize(params.size);
   const strategy = getStrategyBySlug(params.card);
 

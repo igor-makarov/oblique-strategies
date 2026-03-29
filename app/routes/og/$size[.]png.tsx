@@ -86,6 +86,8 @@ async function renderCard(size: OgImageSize): Promise<Uint8Array> {
 }
 
 export async function loader({ params }: Route.LoaderArgs) {
+  console.log("[route] /og/:size.png", { size: params.size });
+
   const size = getOgImageSize(params.size);
 
   if (!size) {

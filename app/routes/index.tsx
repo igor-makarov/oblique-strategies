@@ -20,6 +20,8 @@ function HomeMeta({ siteOrigin }: { siteOrigin: string }) {
 }
 
 export function clientLoader() {
+  console.log("[route] /");
+
   return {
     to: cardRoute(getRandomStrategy().slug),
   };

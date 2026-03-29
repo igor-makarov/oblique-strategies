@@ -8,6 +8,8 @@ import { getStrategyTheme } from "#src/js/utils/getStrategyTheme";
 const pageTitle = "All Cards";
 
 export default function CardsIndexPage() {
+  console.log("[route] /cards/");
+
   return (
     <>
       <title>Oblique Strategies - All Cards</title>
