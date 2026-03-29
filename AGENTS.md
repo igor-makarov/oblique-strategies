@@ -14,3 +14,4 @@ Reference impl: https://github.com/nomatteus/oblique-strategies
 # RR7 + Cloudflare Pages Nuances
 
 - Traliling slash: always add
+- Regenerate Wrangler types: `npx wrangler types`
