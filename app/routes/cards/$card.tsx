@@ -52,12 +52,14 @@ export default function CardPage({ loaderData }: Route.ComponentProps) {
       <meta property="og:title" content={strategy.message} />
       <OgImageMeta siteOrigin={siteOrigin} routePath={cardRoute(strategy.slug)} />
       <CardLayout cardRef={cardRef}>
-        <div className="strategy-kicker" style={accentStyle}>
-          Oblique Strategies
+        <div className="strategy-stack">
+          <div className="strategy-kicker" style={accentStyle}>
+            Oblique Strategies
+          </div>
+          <h1 className="strategy-message">
+            <span style={{ whiteSpace: "pre-line" }}>{strategy.message}</span>
+          </h1>
         </div>
-        <h1 className="strategy-message">
-          <span style={{ whiteSpace: "pre-line" }}>{strategy.message}</span>
-        </h1>
       </CardLayout>
       <PageActions />
     </>

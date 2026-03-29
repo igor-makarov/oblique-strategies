@@ -141,13 +141,23 @@ p {
   width: 100%;
 }
 
+.strategy-stack {
+  display: grid;
+  place-items: center;
+  position: relative;
+}
+
 .strategy-kicker {
+  bottom: calc(100% + 1rem);
   font-size: 0.875rem;
   font-weight: 600;
+  left: 50%;
   letter-spacing: 0.12em;
   margin: 0;
+  position: absolute;
   text-align: center;
   text-transform: uppercase;
+  transform: translateX(-50%);
   white-space: nowrap;
 }
 
