@@ -1,0 +1,20 @@
+[
+  {
+    "localPath": "images/twosides.back.gif",
+    "originalKey": "http://www.rtqe.net/ObliqueStrategies/images/twosides.back.gif",
+    "attempts": [
+      "https://web.archive.org/web/20190405191502id_/http://www.rtqe.net/ObliqueStrategies/images/twosides.back.gif",
+      "https://web.archive.org/web/20190405191502if_/http://www.rtqe.net/ObliqueStrategies/images/twosides.back.gif",
+      "https://web.archive.org/web/20190405191502/http://www.rtqe.net/ObliqueStrategies/images/twosides.back.gif"
+    ]
+  },
+  {
+    "localPath": "images/twosides.front.gif",
+    "originalKey": "http://www.rtqe.net/ObliqueStrategies/images/twosides.front.gif",
+    "attempts": [
+      "https://web.archive.org/web/20190406004212id_/http://www.rtqe.net/ObliqueStrategies/images/twosides.front.gif",
+      "https://web.archive.org/web/20190406004212if_/http://www.rtqe.net/ObliqueStrategies/images/twosides.front.gif",
+      "https://web.archive.org/web/20190406004212/http://www.rtqe.net/ObliqueStrategies/images/twosides.front.gif"
+    ]
+  }
+]
