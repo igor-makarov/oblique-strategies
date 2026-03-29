@@ -8,7 +8,6 @@
   "scripts": {
     "dev": "react-router dev --host 0.0.0.0 --port 3000",
     "build": "react-router build",
-    "postbuild": "node scripts/generate-cloudflare-pages-artifacts.mjs",
     "start": "react-router-serve ./build/server/index.js",
     "preview": "npm run build && wrangler dev",
     "check": "react-router typegen && tsc --noEmit",
