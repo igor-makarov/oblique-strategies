@@ -11,11 +11,9 @@
     "postbuild": "node scripts/generate-cloudflare-pages-artifacts.mjs",
     "start": "react-router-serve ./build/server/index.js",
     "preview": "npm run build && wrangler dev",
-    "typecheck": "react-router typegen && tsc --noEmit",
     "check": "react-router typegen && tsc --noEmit",
     "format": "prettier --write --list-different .",
-    "format:check": "prettier --check .",
-    "cf-typegen": "wrangler types"
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "@forge42/seo-tools": "^1.4.5",
